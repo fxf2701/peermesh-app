@@ -1,0 +1,74 @@
+groups:
+  - name: relay.alerts
+    rules:
+      - alert: RelayDBPoolSaturation
+        expr: (db_pool_in_use / db_pool_total) > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "DB pool saturation high"
+          description: "DB pool in-use ratio > 90% for 5 minutes."
+
+      - alert: RelayDBPoolWaitingHigh
+        expr: db_pool_waiting > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "DB pool waiting queue high"
+          description: "More than 5 connections waiting for the DB pool."
+
+      - alert: RelayDBPoolWaitAvgHigh
+        expr: db_pool_wait_ms_avg > 200
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "DB pool wait time elevated"
+          description: "Average DB pool wait time > 200ms."
+
+      - alert: RelayErrorBudgetBurn
+        expr: (rate(errors_total[5m]) / rate(requests_total[5m])) > 0.02
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Error budget burn high"
+          description: "Error rate > 2% over 10 minutes."
+
+      - alert: RelayFederationSyncFailures
+        expr: rate(federation_sync_fail_total[5m]) > 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Federation sync failures detected"
+          description: "Non-zero federation sync failures over 10 minutes."
+
+      - alert: RelayFederationCursorLagHigh
+        expr: federation_cursor_lag_seconds > 300
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Federation cursor lag high"
+          description: "Federation cursor lag exceeds 5 minutes."
+
+      - alert: RelayFederationCursorRegression
+        expr: increase(federation_cursor_regressions_total[15m]) > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Federation cursor regression"
+          description: "Cursor regression detected in the last 15 minutes."
+
+      - alert: RelayFederationBackpressureDrops
+        expr: increase(federation_backpressure_drops_total[15m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Federation backpressure drops"
+          description: "Requests dropped due to federation backpressure."

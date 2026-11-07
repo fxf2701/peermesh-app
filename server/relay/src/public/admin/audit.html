@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Audit Trail</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/peers">Federation</a>
+        <a href="/admin/banlist">Banlist</a>
+        <a href="/admin/reputation">Reputation</a>
+        <a href="/admin/audit" class="active">Audit Trail</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section
+        class="breadcrumbs"
+        data-breadcrumbs='[{"label":"Back to dashboard","href":"/admin/dashboard"}]'
+      ></section>
+      <section class="hero">
+        <h1>Audit Trail</h1>
+        <p class="muted">Review banlist and reputation changes over time.</p>
+      </section>
+
+      <section class="card">
+        <h2>Filters</h2>
+        <div class="filters">
+          <label>
+            Scope
+            <select id="audit-scope">
+              <option value="all">All</option>
+              <option value="banlist">Banlist</option>
+              <option value="reputation">Reputation</option>
+            </select>
+          </label>
+          <label>
+            Since
+            <input id="audit-since" type="datetime-local" />
+          </label>
+          <label>
+            Limit
+            <input id="audit-limit" type="number" min="1" max="1000" value="200" />
+          </label>
+          <label>
+            Search
+            <input id="audit-search" type="text" placeholder="action, actor, or peer" />
+          </label>
+        </div>
+        <div class="actions-row">
+          <button id="audit-refresh" type="button">Refresh</button>
+        </div>
+        <div id="audit-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Entries</h2>
+        <table class="table" id="audit-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Action</th>
+              <th>Actor</th>
+              <th>Target</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

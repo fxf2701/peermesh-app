@@ -1,0 +1,14 @@
+[Unit]
+Description=Relay Postgres backup (pg_dump)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=BACKUP_DIR=/var/backups/relay
+Environment=RETENTION_DAYS=14
+Environment=DATABASE_URL=postgres://postgres:postgres@localhost:5432/relay
+WorkingDirectory=/opt/disaster-app/server
+ExecStart=/opt/disaster-app/server/relay/scripts/backup-postgres.sh
+User=relay
+Group=relay

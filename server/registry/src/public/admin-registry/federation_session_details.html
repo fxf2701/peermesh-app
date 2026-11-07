@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registry Admin - Federation Session</title>
+    <link rel="stylesheet" href="/admin/assets/registry_admin.css" />
+  </head>
+  <body class="registry-admin">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PeerMesh</div>
+        <h1>Federation Session</h1>
+      </div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/relays">Relay Directory</a>
+        <a href="/admin/federation" class="active">Federation</a>
+        <a href="/admin/beta-program">Beta Program</a>
+        <a href="/admin/moderation-reports">Moderation Reports</a>
+        <a href="/admin/feedback">Feedback</a>
+        <a href="/admin/certificates">Certificates</a>
+        <a href="/admin/metrics">Metrics</a>
+        <button id="logout-button" type="button" class="ghost hidden">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="login-panel" class="panel narrow">
+        <h2>Admin Login</h2>
+        <form id="login-form" class="form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" value="admin" />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2 id="federation-session-title">Session</h2>
+              <p>Registry-issued managed federation authorization details.</p>
+            </div>
+            <div class="actions">
+              <button id="refresh-button" type="button">Refresh</button>
+            </div>
+          </div>
+          <div id="federation-session-detail-grid" class="detail-grid"></div>
+          <div id="federation-session-actions" class="actions detail-actions"></div>
+        </section>
+
+        <section class="split">
+          <article class="panel">
+            <h2>Assigned Peers</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Relay</th>
+                    <th>Endpoint</th>
+                    <th>Permissions</th>
+                    <th>Allowed GIDs</th>
+                    <th>Expires</th>
+                  </tr>
+                </thead>
+                <tbody id="federation-session-peers-body"></tbody>
+              </table>
+            </div>
+          </article>
+          <article class="panel">
+            <h2>Source Relay</h2>
+            <div id="federation-session-relay-grid" class="detail-grid"></div>
+          </article>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Audit History</h2>
+              <p>Session-specific governance history.</p>
+            </div>
+            <div class="toolbar">
+              <a id="audit-export-csv" class="ghost" href="/admin/api/audit/export?format=csv">Export CSV</a>
+              <a id="audit-export-jsonl" class="ghost" href="/admin/api/audit/export?format=jsonl">Export JSONL</a>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Actor</th>
+                  <th>Action</th>
+                  <th>Resource</th>
+                  <th>Result</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id="audit-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/assets/registry_admin.js"></script>
+  </body>
+</html>

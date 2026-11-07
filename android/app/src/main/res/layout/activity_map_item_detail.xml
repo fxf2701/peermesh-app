@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/map_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/map_detail_kind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/map_detail_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/map_detail_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="12"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/map_detail_domain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/map_detail_availability_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/map_detail_capability_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/map_detail_community_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/map_detail_verification_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/map_detail_verification_heading"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/map_detail_verification_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp" />
+
+            <TextView
+                android:id="@+id/map_detail_freshness_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/map_detail_freshness_heading"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/map_detail_freshness_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp" />
+
+            <TextView
+                android:id="@+id/map_detail_participation_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/map_detail_participation_heading"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/map_detail_participation_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp" />
+
+            <TextView
+                android:id="@+id/map_detail_note_preview_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/map_detail_note_preview_heading"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/map_detail_note_preview_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:maxLines="8"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/map_detail_interactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <Button android:id="@+id/map_detail_confirm" style="@style/PeerMeshButtonSecondary" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/map_detail_confirm" />
+            <TextView android:id="@+id/map_detail_confirm_reason" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" />
+            <Button android:id="@+id/map_detail_update" style="@style/PeerMeshButtonSecondary" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/map_detail_add_update" />
+            <TextView android:id="@+id/map_detail_update_reason" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" />
+            <Button android:id="@+id/map_detail_resolve" style="@style/PeerMeshButtonSecondary" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/map_detail_resolve" />
+            <TextView android:id="@+id/map_detail_resolve_reason" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" />
+            <Button android:id="@+id/map_detail_acknowledge" style="@style/PeerMeshButtonSecondary" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/map_detail_acknowledge" />
+            <TextView android:id="@+id/map_detail_acknowledge_reason" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" />
+            <Button android:id="@+id/map_detail_add_note" style="@style/PeerMeshButtonSecondary" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/map_detail_add_note" />
+            <TextView android:id="@+id/map_detail_add_note_reason" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/map_detail_timeline_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/map_detail_timeline_heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/map_detail_timeline_heading"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/map_detail_timeline_retained_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/map_detail_timeline_retained_history"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/map_detail_timeline_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/map_detail_timeline_retry"
+                style="@style/PeerMeshButtonSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/map_detail_timeline_retry"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/map_detail_timeline_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false" />
+
+            <Button
+                android:id="@+id/map_detail_timeline_load_older"
+                style="@style/PeerMeshButtonSecondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/map_detail_timeline_load_older"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/map_detail_refresh"
+            style="@style/PeerMeshButtonSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/map_detail_refresh" />
+    </LinearLayout>
+</ScrollView>

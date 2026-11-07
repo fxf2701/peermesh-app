@@ -1,0 +1,339 @@
+services:
+  registry:
+    container_name: disaster-app-registry
+    build:
+      context: ./registry
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8080
+      HOST: 0.0.0.0
+      REGISTRY_DB_PATH: /app/data/registry.sqlite
+      REGISTRY_SHARED_SECRET: dev-registry-secret
+      REGISTRY_ACTIVE_TTL_SECONDS: 300
+      REGISTRY_SIGNATURE_SKEW_SECONDS: 300
+      REGISTRY_NONCE_TTL_SECONDS: 600
+      REGISTRY_REQUIRE_SIGNATURE: 1
+      REGISTRY_ADMIN_CREDENTIALS_FILE: /app/config/admin_credentials.dev.json
+      REGISTRY_FEDERATION_SESSION_SIGNING_SECRET: dev-registry-session-secret
+      REGISTRY_FEDERATION_SESSION_TTL_SECONDS: 300
+      REGISTRY_FEDERATION_MAX_PEERS_PER_SESSION: 4
+      REGISTRY_FEDERATION_POLICY_VERSION: 1
+      REGISTRY_FEDERATION_MIN_TRUST_LEVEL: trusted
+      REGISTRY_FEDERATION_REQUIRE_CERTIFICATE: 0
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./registry/data:/app/data
+      - ./registry/config:/app/config:ro
+    networks:
+      - relay-internet
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.15"
+          memory: 192M
+
+  relay:
+    container_name: disaster-app-relay
+    build:
+      context: ./relay
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env.dev
+    environment:
+      PORT: 8080
+      SERVER_ROLE: relay
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/relay
+      MIGRATIONS_TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/relay_test
+      REDIS_URL: redis://redis:6379
+
+      FEDERATION_SELF_URL: http://relay:8080
+      FEDERATION_SELF_ID: relay
+      FEDERATION_PEERS: http://relay_2:8080
+      FEDERATION_SYNC_GIDS: demo-gid
+
+      # Register this local relay in the local registry.
+      REGISTRY_HEARTBEAT_ENABLED: 1
+      REGISTRY_URL: http://registry:8080
+      REGISTRY_SHARED_SECRET: dev-registry-secret
+      REGISTRY_ADVERTISED_ENDPOINT: http://relay:8080
+      REGISTRY_RELAY_REGION: dev-local
+      REGISTRY_HEARTBEAT_INTERVAL_SECONDS: 30
+      REGISTRY_FEDERATION_SESSIONS_ENABLED: 1
+      REGISTRY_FEDERATION_SESSION_REFRESH_INTERVAL_SECONDS: 30
+      REGISTRY_FEDERATION_SESSION_RETRY_SECONDS: 30
+      REGISTRY_FEDERATION_SESSION_RENEW_AHEAD_SECONDS: 60
+      REGISTRY_FEDERATION_SESSION_MAX_PEERS: 4
+      REGISTRY_FEDERATION_SESSION_SIGNING_SECRET: dev-registry-session-secret
+
+      AUDIT_LOG_ENABLED: 1
+      AUDIT_LOG_PATH: /app/data/audit.log
+      AUDIT_LOG_SECRET: dev-audit-secret
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./relay/migrations:/app/migrations
+      - ./relay/scripts:/app/scripts
+      - ./relay/src:/app/src
+      - ./relay/config:/app/config
+      - ./relay/data:/app/data
+      - ./relay/backups:/var/backups/relay
+    depends_on:
+      registry:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - mess-dev-network
+      - relay-internet
+    deploy:
+      resources:
+        limits:
+          cpus: "0.45"
+          memory: 900M
+
+  relay_2:
+    profiles: ["multi"]
+    container_name: disaster-app-relay-2
+    build:
+      context: ./relay
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env.dev
+    environment:
+      PORT: 8080
+      SERVER_ROLE: relay
+      DATABASE_URL: postgres://postgres:postgres@postgres_2:5432/relay
+      MIGRATIONS_TEST_DATABASE_URL: postgres://postgres:postgres@postgres_2:5432/relay_test
+      REDIS_URL: redis://redis_2:6379
+
+      FEDERATION_SELF_URL: http://relay_2:8080
+      FEDERATION_SELF_ID: relay-2
+      FEDERATION_PEERS: http://relay:8080
+      FEDERATION_SYNC_GIDS: demo-gid
+      REQUEST_SIGNATURE_ENABLED: 0
+      FEDERATION_PEER_ALLOWLIST:
+
+      # Register this second local relay in the local registry.
+      REGISTRY_HEARTBEAT_ENABLED: 1
+      REGISTRY_URL: http://registry:8080
+      REGISTRY_SHARED_SECRET: dev-registry-secret
+      REGISTRY_ADVERTISED_ENDPOINT: http://relay_2:8080
+      REGISTRY_RELAY_REGION: dev-local
+      REGISTRY_HEARTBEAT_INTERVAL_SECONDS: 30
+      REGISTRY_FEDERATION_SESSIONS_ENABLED: 1
+      REGISTRY_FEDERATION_SESSION_REFRESH_INTERVAL_SECONDS: 30
+      REGISTRY_FEDERATION_SESSION_RETRY_SECONDS: 30
+      REGISTRY_FEDERATION_SESSION_RENEW_AHEAD_SECONDS: 60
+      REGISTRY_FEDERATION_SESSION_MAX_PEERS: 4
+      REGISTRY_FEDERATION_SESSION_SIGNING_SECRET: dev-registry-session-secret
+
+      AUDIT_LOG_ENABLED: 1
+      AUDIT_LOG_PATH: /app/data/audit.log
+      AUDIT_LOG_SECRET: dev-audit-secret-2
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./relay/migrations:/app/migrations
+      - ./relay/scripts:/app/scripts
+      - ./relay/src:/app/src
+      - ./relay/config:/app/config
+      - ./relay/data_2:/app/data
+      - ./relay/backups_2:/var/backups/relay
+    depends_on:
+      registry:
+        condition: service_started
+      postgres_2:
+        condition: service_healthy
+      redis_2:
+        condition: service_started
+    networks:
+      - mess-dev-network-2
+      - relay-internet
+    deploy:
+      resources:
+        limits:
+          cpus: "0.45"
+          memory: 900M
+
+  postgres:
+    image: postgres:16
+    container_name: disaster-app-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: relay
+    volumes:
+      - ./relay/config/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+      - ./relay/migrations/001_initial.up.sql:/docker-entrypoint-initdb.d/001_initial.up.sql:ro
+      - ./relay/backups:/var/backups/relay
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d relay"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mess-dev-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.35"
+          memory: 700M
+
+  postgres_2:
+    profiles: ["multi"]
+    image: postgres:16
+    container_name: disaster-app-postgres-2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: relay
+    volumes:
+      - ./relay/config/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+      - ./relay/migrations/001_initial.up.sql:/docker-entrypoint-initdb.d/001_initial.up.sql:ro
+      - ./relay/backups_2:/var/backups/relay
+      - pg_data_2:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d relay"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mess-dev-network-2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 500M
+
+  redis:
+    image: redis:7-alpine
+    container_name: disaster-app-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mess-dev-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.05"
+          memory: 128M
+
+  redis_2:
+    profiles: ["multi"]
+    image: redis:7-alpine
+    container_name: disaster-app-redis-2
+    ports:
+      - "6380:6379"
+    networks:
+      - mess-dev-network-2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.05"
+          memory: 128M
+
+  prometheus:
+    profiles: ["metrics"]
+    image: prom/prometheus:v2.49.1
+    container_name: disaster-app-prometheus
+    volumes:
+      - ./relay/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./relay/config/relay_alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - mess-dev-network
+      - relay-internet
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 256M
+
+  grafana:
+    profiles: ["metrics"]
+    image: grafana/grafana:10.2.2
+    container_name: disaster-app-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./relay/config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./relay/config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - mess-dev-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 256M
+
+  relay_backup:
+    profiles: ["backup"]
+    image: postgres:16
+    container_name: disaster-app-backup
+    env_file:
+      - ./.env.dev
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/relay
+    volumes:
+      - ./relay/backups:/backup
+      - ./relay/scripts/backup-healthcheck.sh:/usr/local/bin/backup-healthcheck.sh:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        while true; do
+          stamp=$$(date -u +"%Y%m%dT%H%M%SZ")
+          echo "[relay_backup] starting backup at $$stamp"
+          pg_dump -Fc "$$DATABASE_URL" > "/backup/relay_$${stamp}.dump"
+          sha256sum "/backup/relay_$${stamp}.dump" > "/backup/relay_$${stamp}.dump.sha256"
+          echo "[relay_backup] finished backup at $$(date -u +"%Y%m%dT%H%M%SZ")"
+          touch "/backup/last_backup.ok"
+          if [ -n "$$BACKUP_RETENTION_DAYS" ]; then
+            find /backup -type f -name "relay_*.dump" -mtime +"$$BACKUP_RETENTION_DAYS" -delete
+            find /backup -type f -name "relay_*.dump.sha256" -mtime +"$$BACKUP_RETENTION_DAYS" -delete
+          fi
+          sleep "$$BACKUP_INTERVAL_SECONDS"
+        done
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/local/bin/backup-healthcheck.sh"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - mess-dev-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 256M
+
+volumes:
+  pg_data:
+  pg_data_2:
+
+networks:
+  mess-dev-network:
+    driver: bridge
+  mess-dev-network-2:
+    driver: bridge
+  relay-internet:
+    driver: bridge

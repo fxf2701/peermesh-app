@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_group_chat"
+        android:title="@string/menu_chat" />
+    <item
+        android:id="@+id/menu_group_detail"
+        android:title="@string/group_detail_title" />
+    <item
+        android:id="@+id/menu_group_settings"
+        android:title="@string/group_settings_title" />
+    <item
+        android:id="@+id/menu_group_close"
+        android:title="@string/close" />
+</menu>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Settings</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/peers">Federation</a>
+        <a href="/admin/banlist">Banlist</a>
+        <a href="/admin/reputation">Reputation</a>
+        <a href="/admin/audit">Audit Trail</a>
+        <a href="/admin/settings" class="active">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section
+        class="breadcrumbs"
+        data-breadcrumbs='[{"label":"Back to dashboard","href":"/admin/dashboard"}]'
+      ></section>
+      <section class="hero">
+        <h1>Settings</h1>
+        <p class="muted">Read-only config summary and safe ops.</p>
+      </section>
+
+      <section class="card">
+        <div class="banner">Read-only: changes require editing .env and restarting the relay.</div>
+        <div class="actions-row">
+          <h2>Config Summary</h2>
+          <button type="button" id="settings-refresh" class="pill-button">Refresh</button>
+        </div>
+        <table class="table" id="settings-table">
+          <thead>
+            <tr>
+              <th>Setting</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="settings-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Discovery</h2>
+        <p class="muted">Control how discovered peers are handled.</p>
+        <label class="inline-row">
+          <input type="checkbox" id="settings-auto-connect" />
+          Auto-connect discovered peers
+        </label>
+        <div id="settings-discovery-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Log Locations</h2>
+        <div id="settings-log-paths" class="code-block">—</div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

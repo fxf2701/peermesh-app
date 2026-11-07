@@ -1,0 +1,91 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.PeerMesh" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/peer_mesh_primary</item>
+        <item name="colorPrimaryVariant">@color/peer_mesh_primary_dark</item>
+        <item name="colorOnPrimary">@color/peer_mesh_on_primary</item>
+        <item name="colorSecondary">@color/peer_mesh_secondary</item>
+        <item name="colorOnSecondary">@color/peer_mesh_on_secondary</item>
+        <item name="android:colorBackground">@color/peer_mesh_bg</item>
+        <item name="colorSurface">@color/peer_mesh_surface</item>
+        <item name="colorOnSurface">@color/peer_mesh_text_primary</item>
+        <item name="colorOnBackground">@color/peer_mesh_text_primary</item>
+        <item name="colorControlActivated">@color/peer_mesh_primary</item>
+        <item name="colorControlNormal">@color/peer_mesh_text_secondary</item>
+        <item name="colorControlHighlight">@color/peer_mesh_primary</item>
+        <item name="android:windowBackground">@color/peer_mesh_bg</item>
+        <item name="android:textColorPrimary">@color/peer_mesh_text_primary</item>
+        <item name="android:textColorSecondary">@color/peer_mesh_text_secondary</item>
+        <item name="android:statusBarColor">@color/peer_mesh_bg</item>
+        <item name="android:navigationBarColor">@color/peer_mesh_bg</item>
+        <item name="peerMeshHeaderSurface">@color/peer_mesh_surface</item>
+        <item name="peerMeshNoticeSurface">@color/peer_mesh_surface</item>
+        <item name="peerMeshCardStroke">@color/peer_mesh_border</item>
+        <item name="peerMeshMenuDivider">@color/peer_mesh_menu_divider</item>
+        <item name="peerMeshSecondaryButtonSurface">@color/peer_mesh_surface</item>
+        <item name="peerMeshChatMessageSurface">@color/peer_mesh_surface_chat</item>
+        <item name="peerMeshChatMessageStroke">@color/peer_mesh_border</item>
+        <item name="peerMeshChatReplySurface">@color/peer_mesh_surface_2</item>
+        <item name="peerMeshChatReplyStroke">@color/peer_mesh_border_soft</item>
+        <item name="peerMeshChatMessageHighlightSurface">@color/peer_mesh_chat_highlight_surface</item>
+        <item name="materialButtonStyle">@style/PeerMeshButtonPrimary</item>
+        <item name="materialAlertDialogTheme">@style/PeerMeshAlertDialog</item>
+        <item name="alertDialogTheme">@style/PeerMeshAlertDialog</item>
+    </style>
+
+    <style name="Theme.PeerMesh.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/peer_mesh_light_primary</item>
+        <item name="colorPrimaryVariant">@color/peer_mesh_light_primary_dark</item>
+        <item name="colorOnPrimary">@color/peer_mesh_light_on_primary</item>
+        <item name="colorSecondary">@color/peer_mesh_light_secondary</item>
+        <item name="colorOnSecondary">@color/peer_mesh_light_on_secondary</item>
+        <item name="android:colorBackground">@color/peer_mesh_light_bg</item>
+        <item name="colorSurface">@color/peer_mesh_light_surface</item>
+        <item name="colorOnSurface">@color/peer_mesh_light_text_primary</item>
+        <item name="colorOnBackground">@color/peer_mesh_light_text_primary</item>
+        <item name="colorControlActivated">@color/peer_mesh_light_primary</item>
+        <item name="colorControlNormal">@color/peer_mesh_light_text_secondary</item>
+        <item name="colorControlHighlight">@color/peer_mesh_light_primary</item>
+        <item name="android:windowBackground">@color/peer_mesh_light_bg</item>
+        <item name="android:textColorPrimary">@color/peer_mesh_light_text_primary</item>
+        <item name="android:textColorSecondary">@color/peer_mesh_light_text_secondary</item>
+        <item name="android:statusBarColor">@color/peer_mesh_light_bg</item>
+        <item name="android:navigationBarColor">@color/peer_mesh_light_bg</item>
+        <item name="peerMeshHeaderSurface">@color/peer_mesh_light_header</item>
+        <item name="peerMeshNoticeSurface">@color/peer_mesh_light_notice_bg</item>
+        <item name="peerMeshCardStroke">@color/peer_mesh_light_border</item>
+        <item name="peerMeshMenuDivider">@color/peer_mesh_light_menu_divider</item>
+        <item name="peerMeshSecondaryButtonSurface">@color/white</item>
+        <item name="peerMeshChatMessageSurface">@color/peer_mesh_light_surface_chat</item>
+        <item name="peerMeshChatMessageStroke">@color/peer_mesh_light_border</item>
+        <item name="peerMeshChatReplySurface">@color/white</item>
+        <item name="peerMeshChatReplyStroke">@color/peer_mesh_light_border_soft</item>
+        <item name="peerMeshChatMessageHighlightSurface">@color/peer_mesh_light_chat_highlight_surface</item>
+        <item name="materialButtonStyle">@style/PeerMeshButtonPrimary</item>
+        <item name="materialAlertDialogTheme">@style/PeerMeshAlertDialog.Light</item>
+        <item name="alertDialogTheme">@style/PeerMeshAlertDialog.Light</item>
+    </style>
+
+    <style name="PeerMeshAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/peer_mesh_surface</item>
+        <item name="colorOnSurface">@color/peer_mesh_text_primary</item>
+        <item name="android:textColorPrimary">@color/peer_mesh_text_primary</item>
+        <item name="android:textColorSecondary">@color/peer_mesh_text_secondary</item>
+        <item name="android:windowBackground">@color/peer_mesh_surface</item>
+    </style>
+
+    <style name="PeerMeshAlertDialog.Light" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/peer_mesh_light_surface</item>
+        <item name="colorOnSurface">@color/peer_mesh_light_text_primary</item>
+        <item name="android:textColorPrimary">@color/peer_mesh_light_text_primary</item>
+        <item name="android:textColorSecondary">@color/peer_mesh_light_text_secondary</item>
+        <item name="android:windowBackground">@color/peer_mesh_light_surface</item>
+    </style>
+
+    <style name="Theme.PeerMesh.QrScanDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.65</item>
+    </style>
+</resources>

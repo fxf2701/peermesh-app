@@ -1,0 +1,1831 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 31,
+    "identityHash": "757a22e7bd944da4e24ff78e00501095",
+    "entities": [
+      {
+        "tableName": "events",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gid` TEXT NOT NULL, `event_id` TEXT NOT NULL, `type` TEXT NOT NULL, `source` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `time_lt` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `ref_root` TEXT, `ref_parent` TEXT, `ref_target` TEXT, `ttl_s` INTEGER, `payload_json` TEXT NOT NULL, `inserted_at` INTEGER NOT NULL, `invalid_at` INTEGER, `invalid_reason` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "event_id",
+            "columnName": "event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time_lt",
+            "columnName": "time_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ref_root",
+            "columnName": "ref_root",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ref_parent",
+            "columnName": "ref_parent",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ref_target",
+            "columnName": "ref_target",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ttl_s",
+            "columnName": "ttl_s",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "payload_json",
+            "columnName": "payload_json",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inserted_at",
+            "columnName": "inserted_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "invalid_at",
+            "columnName": "invalid_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "invalid_reason",
+            "columnName": "invalid_reason",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_events_gid_event_id",
+            "unique": true,
+            "columnNames": [
+              "gid",
+              "event_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_events_gid_event_id` ON `${TABLE_NAME}` (`gid`, `event_id`)"
+          },
+          {
+            "name": "index_events_gid_created_t",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "created_t"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_events_gid_created_t` ON `${TABLE_NAME}` (`gid`, `created_t`)"
+          },
+          {
+            "name": "index_events_gid_type",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "type"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_events_gid_type` ON `${TABLE_NAME}` (`gid`, `type`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "event_dedupe",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `event_id` TEXT NOT NULL, `seen_at` INTEGER NOT NULL, `expires_at` INTEGER NOT NULL, PRIMARY KEY(`gid`, `event_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "event_id",
+            "columnName": "event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seen_at",
+            "columnName": "seen_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "event_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_event_dedupe_expires_at",
+            "unique": false,
+            "columnNames": [
+              "expires_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_event_dedupe_expires_at` ON `${TABLE_NAME}` (`expires_at`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "groups",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `kid` TEXT, `name` TEXT, `owner_did` TEXT, `context_profile` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`gid`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kid",
+            "columnName": "kid",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "owner_did",
+            "columnName": "owner_did",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "context_profile",
+            "columnName": "context_profile",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "keys",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `kid` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`gid`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kid",
+            "columnName": "kid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "chat_messages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `message_id` TEXT NOT NULL, `text` TEXT NOT NULL, `status` TEXT NOT NULL, `delivery_status` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `reply_to` TEXT, `expires_at` INTEGER, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, `received_ack_count` INTEGER NOT NULL, `received_group_ack_count` INTEGER NOT NULL, `received_ack_by` TEXT, `received_group_ack_by` TEXT, `seen_by` TEXT, PRIMARY KEY(`gid`, `message_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "message_id",
+            "columnName": "message_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "delivery_status",
+            "columnName": "delivery_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reply_to",
+            "columnName": "reply_to",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "received_ack_count",
+            "columnName": "received_ack_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "received_group_ack_count",
+            "columnName": "received_group_ack_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "received_ack_by",
+            "columnName": "received_ack_by",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "received_group_ack_by",
+            "columnName": "received_group_ack_by",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "seen_by",
+            "columnName": "seen_by",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "message_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_chat_messages_gid_created_t",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "created_t"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_chat_messages_gid_created_t` ON `${TABLE_NAME}` (`gid`, `created_t`)"
+          },
+          {
+            "name": "index_chat_messages_gid_status",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_chat_messages_gid_status` ON `${TABLE_NAME}` (`gid`, `status`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_layers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `layer_id` TEXT NOT NULL, `name` TEXT, `status` TEXT NOT NULL, `updated_t` INTEGER NOT NULL, PRIMARY KEY(`gid`, `layer_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "layer_id",
+            "columnName": "layer_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "layer_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_markers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `marker_id` TEXT NOT NULL, `layer_id` TEXT NOT NULL, `lat` REAL NOT NULL, `lon` REAL NOT NULL, `radius_m` REAL, `label` TEXT, `note` TEXT, `kind` TEXT, `confidence` INTEGER NOT NULL, `status` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `removal_requested_t` INTEGER, `removal_requested_actor` TEXT, `removal_reason` TEXT, `removal_cancel_t` INTEGER, `expires_at` INTEGER, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `marker_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marker_id",
+            "columnName": "marker_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "layer_id",
+            "columnName": "layer_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lon",
+            "columnName": "lon",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "radius_m",
+            "columnName": "radius_m",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "confidence",
+            "columnName": "confidence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "removal_requested_t",
+            "columnName": "removal_requested_t",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "removal_requested_actor",
+            "columnName": "removal_requested_actor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "removal_reason",
+            "columnName": "removal_reason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "removal_cancel_t",
+            "columnName": "removal_cancel_t",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "marker_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_markers_gid_layer_id_status",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "layer_id",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_markers_gid_layer_id_status` ON `${TABLE_NAME}` (`gid`, `layer_id`, `status`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_marker_field_clock",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `marker_id` TEXT NOT NULL, `field` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `marker_id`, `field`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marker_id",
+            "columnName": "marker_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "field",
+            "columnName": "field",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "marker_id",
+            "field"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_marker_field_clock_gid_marker_id",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "marker_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_marker_field_clock_gid_marker_id` ON `${TABLE_NAME}` (`gid`, `marker_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_item_votes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `item_id` TEXT NOT NULL, `item_type` TEXT NOT NULL, `actor_did` TEXT NOT NULL, `note` TEXT, `confidence` INTEGER NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, PRIMARY KEY(`gid`, `item_id`, `actor_did`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "item_id",
+            "columnName": "item_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "item_type",
+            "columnName": "item_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "confidence",
+            "columnName": "confidence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "item_id",
+            "actor_did"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_item_votes_gid_item_id",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "item_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_item_votes_gid_item_id` ON `${TABLE_NAME}` (`gid`, `item_id`)"
+          },
+          {
+            "name": "index_map_item_votes_gid_actor_did",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "actor_did"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_item_votes_gid_actor_did` ON `${TABLE_NAME}` (`gid`, `actor_did`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `area_id` TEXT NOT NULL, `layer_id` TEXT NOT NULL, `geometry_json` TEXT NOT NULL, `label` TEXT, `note` TEXT, `kind` TEXT, `confidence` INTEGER NOT NULL, `status` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `removal_requested_t` INTEGER, `removal_requested_actor` TEXT, `removal_reason` TEXT, `removal_cancel_t` INTEGER, `expires_at` INTEGER, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `area_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "area_id",
+            "columnName": "area_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "layer_id",
+            "columnName": "layer_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "geometry_json",
+            "columnName": "geometry_json",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "confidence",
+            "columnName": "confidence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "removal_requested_t",
+            "columnName": "removal_requested_t",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "removal_requested_actor",
+            "columnName": "removal_requested_actor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "removal_reason",
+            "columnName": "removal_reason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "removal_cancel_t",
+            "columnName": "removal_cancel_t",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "area_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_areas_gid_layer_id_status",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "layer_id",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_areas_gid_layer_id_status` ON `${TABLE_NAME}` (`gid`, `layer_id`, `status`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "live_trails",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trail_id` TEXT NOT NULL, `gid` TEXT NOT NULL, `owner_did` TEXT NOT NULL, `name` TEXT, `share_scope` TEXT NOT NULL, `share_to_json` TEXT, `start_t` INTEGER NOT NULL, `end_t` INTEGER, `point_count` INTEGER NOT NULL, `dist_m` REAL NOT NULL, `active` INTEGER NOT NULL, `accepted` INTEGER NOT NULL, `pending_expires_t` INTEGER, `updated_t` INTEGER NOT NULL, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`trail_id`))",
+        "fields": [
+          {
+            "fieldPath": "trail_id",
+            "columnName": "trail_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "owner_did",
+            "columnName": "owner_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "share_scope",
+            "columnName": "share_scope",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "share_to_json",
+            "columnName": "share_to_json",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "start_t",
+            "columnName": "start_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "end_t",
+            "columnName": "end_t",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "point_count",
+            "columnName": "point_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dist_m",
+            "columnName": "dist_m",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "active",
+            "columnName": "active",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accepted",
+            "columnName": "accepted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pending_expires_t",
+            "columnName": "pending_expires_t",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "trail_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_live_trails_gid_updated_t",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "updated_t"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_trails_gid_updated_t` ON `${TABLE_NAME}` (`gid`, `updated_t`)"
+          },
+          {
+            "name": "index_live_trails_gid_owner_did",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "owner_did"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_trails_gid_owner_did` ON `${TABLE_NAME}` (`gid`, `owner_did`)"
+          },
+          {
+            "name": "index_live_trails_gid_active",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "active"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_trails_gid_active` ON `${TABLE_NAME}` (`gid`, `active`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "live_trail_points",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trail_id` TEXT NOT NULL, `idx` INTEGER NOT NULL, `lat` REAL NOT NULL, `lon` REAL NOT NULL, `t` INTEGER NOT NULL, `acc` REAL, `spd` REAL, `mm` INTEGER NOT NULL, PRIMARY KEY(`trail_id`, `idx`))",
+        "fields": [
+          {
+            "fieldPath": "trail_id",
+            "columnName": "trail_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idx",
+            "columnName": "idx",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lon",
+            "columnName": "lon",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "t",
+            "columnName": "t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "acc",
+            "columnName": "acc",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "spd",
+            "columnName": "spd",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mm",
+            "columnName": "mm",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "trail_id",
+            "idx"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_live_trail_points_trail_id",
+            "unique": false,
+            "columnNames": [
+              "trail_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_live_trail_points_trail_id` ON `${TABLE_NAME}` (`trail_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "relay_cursors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`relay_url` TEXT NOT NULL, `gid` TEXT NOT NULL, `cursor` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`relay_url`, `gid`))",
+        "fields": [
+          {
+            "fieldPath": "relay_url",
+            "columnName": "relay_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cursor",
+            "columnName": "cursor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "relay_url",
+            "gid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "relay_push_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`relay_url` TEXT NOT NULL, `last_push_at` INTEGER NOT NULL, `last_push_event_id` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`relay_url`))",
+        "fields": [
+          {
+            "fieldPath": "relay_url",
+            "columnName": "relay_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_push_at",
+            "columnName": "last_push_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_push_event_id",
+            "columnName": "last_push_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "relay_url"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "trails",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trail_id` TEXT NOT NULL, `name` TEXT NOT NULL, `mode` TEXT NOT NULL, `start_t` INTEGER NOT NULL, `end_t` INTEGER NOT NULL, `point_count` INTEGER NOT NULL, `dist_m` REAL NOT NULL, `unstable` INTEGER NOT NULL, `unstable_note` TEXT, PRIMARY KEY(`trail_id`))",
+        "fields": [
+          {
+            "fieldPath": "trail_id",
+            "columnName": "trail_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mode",
+            "columnName": "mode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "start_t",
+            "columnName": "start_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "end_t",
+            "columnName": "end_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "point_count",
+            "columnName": "point_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dist_m",
+            "columnName": "dist_m",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unstable",
+            "columnName": "unstable",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unstable_note",
+            "columnName": "unstable_note",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "trail_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_trails_start_t",
+            "unique": false,
+            "columnNames": [
+              "start_t"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_trails_start_t` ON `${TABLE_NAME}` (`start_t`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "trail_points",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tid` TEXT NOT NULL, `idx` INTEGER NOT NULL, `lat` REAL NOT NULL, `lon` REAL NOT NULL, `t` INTEGER NOT NULL, `acc` REAL, `spd` REAL, `mm` INTEGER NOT NULL, PRIMARY KEY(`tid`, `idx`), FOREIGN KEY(`tid`) REFERENCES `trails`(`trail_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "tid",
+            "columnName": "tid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idx",
+            "columnName": "idx",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lon",
+            "columnName": "lon",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "t",
+            "columnName": "t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "acc",
+            "columnName": "acc",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "spd",
+            "columnName": "spd",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mm",
+            "columnName": "mm",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "tid",
+            "idx"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_trail_points_tid",
+            "unique": false,
+            "columnNames": [
+              "tid"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_trail_points_tid` ON `${TABLE_NAME}` (`tid`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "trails",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "tid"
+            ],
+            "referencedColumns": [
+              "trail_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "user_profiles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `actor_did` TEXT NOT NULL, `display_name` TEXT NOT NULL, `avatar_id` TEXT, `updated_at` INTEGER NOT NULL, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `actor_did`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "display_name",
+            "columnName": "display_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "avatar_id",
+            "columnName": "avatar_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "actor_did"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_profiles_gid_updated_at",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "updated_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_profiles_gid_updated_at` ON `${TABLE_NAME}` (`gid`, `updated_at`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "outbound_batch",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`batch_id` TEXT NOT NULL, `gid` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, `status` TEXT NOT NULL, `lane` TEXT NOT NULL, `priority` INTEGER NOT NULL, `attempt_count` INTEGER NOT NULL, `last_error` TEXT, `locked_at` INTEGER, `sent_at` INTEGER, `payload` BLOB NOT NULL, `event_count` INTEGER NOT NULL, `first_event_created_t` INTEGER NOT NULL, `last_event_created_t` INTEGER NOT NULL, `source` TEXT NOT NULL, PRIMARY KEY(`batch_id`))",
+        "fields": [
+          {
+            "fieldPath": "batch_id",
+            "columnName": "batch_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lane",
+            "columnName": "lane",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attempt_count",
+            "columnName": "attempt_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_error",
+            "columnName": "last_error",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "locked_at",
+            "columnName": "locked_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sent_at",
+            "columnName": "sent_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "payload",
+            "columnName": "payload",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "event_count",
+            "columnName": "event_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "first_event_created_t",
+            "columnName": "first_event_created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_created_t",
+            "columnName": "last_event_created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "batch_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_outbound_batch_status_lane_created_at",
+            "unique": false,
+            "columnNames": [
+              "status",
+              "lane",
+              "created_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_status_lane_created_at` ON `${TABLE_NAME}` (`status`, `lane`, `created_at`)"
+          },
+          {
+            "name": "index_outbound_batch_gid_status_lane_created_at",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "status",
+              "lane",
+              "created_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_gid_status_lane_created_at` ON `${TABLE_NAME}` (`gid`, `status`, `lane`, `created_at`)"
+          },
+          {
+            "name": "index_outbound_batch_locked_at",
+            "unique": false,
+            "columnNames": [
+              "locked_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_locked_at` ON `${TABLE_NAME}` (`locked_at`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "outbound_batch_event",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`batch_id` TEXT NOT NULL, `event_id` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `ordinal_in_batch` INTEGER NOT NULL, PRIMARY KEY(`batch_id`, `event_id`), FOREIGN KEY(`batch_id`) REFERENCES `outbound_batch`(`batch_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "batch_id",
+            "columnName": "batch_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "event_id",
+            "columnName": "event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ordinal_in_batch",
+            "columnName": "ordinal_in_batch",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "batch_id",
+            "event_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_outbound_batch_event_batch_id_ordinal_in_batch",
+            "unique": false,
+            "columnNames": [
+              "batch_id",
+              "ordinal_in_batch"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_event_batch_id_ordinal_in_batch` ON `${TABLE_NAME}` (`batch_id`, `ordinal_in_batch`)"
+          },
+          {
+            "name": "index_outbound_batch_event_event_id",
+            "unique": false,
+            "columnNames": [
+              "event_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_event_event_id` ON `${TABLE_NAME}` (`event_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "outbound_batch",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "batch_id"
+            ],
+            "referencedColumns": [
+              "batch_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "outbound_batch_peer_delivery",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`batch_id` TEXT NOT NULL, `device_id` TEXT NOT NULL, `state` TEXT NOT NULL, `attempt_count` INTEGER NOT NULL, `last_error` TEXT, `last_attempt_at` INTEGER, `next_retry_at` INTEGER, `delivered_at` INTEGER, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`batch_id`, `device_id`), FOREIGN KEY(`batch_id`) REFERENCES `outbound_batch`(`batch_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "batch_id",
+            "columnName": "batch_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "device_id",
+            "columnName": "device_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attempt_count",
+            "columnName": "attempt_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_error",
+            "columnName": "last_error",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_attempt_at",
+            "columnName": "last_attempt_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "next_retry_at",
+            "columnName": "next_retry_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "delivered_at",
+            "columnName": "delivered_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "batch_id",
+            "device_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_outbound_batch_peer_delivery_batch_id_state",
+            "unique": false,
+            "columnNames": [
+              "batch_id",
+              "state"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_peer_delivery_batch_id_state` ON `${TABLE_NAME}` (`batch_id`, `state`)"
+          },
+          {
+            "name": "index_outbound_batch_peer_delivery_device_id_state",
+            "unique": false,
+            "columnNames": [
+              "device_id",
+              "state"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_peer_delivery_device_id_state` ON `${TABLE_NAME}` (`device_id`, `state`)"
+          },
+          {
+            "name": "index_outbound_batch_peer_delivery_state_next_retry_at",
+            "unique": false,
+            "columnNames": [
+              "state",
+              "next_retry_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_outbound_batch_peer_delivery_state_next_retry_at` ON `${TABLE_NAME}` (`state`, `next_retry_at`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "outbound_batch",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "batch_id"
+            ],
+            "referencedColumns": [
+              "batch_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '757a22e7bd944da4e24ff78e00501095')"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+<resources>
+    <style name="PeerMeshDrawerItemText">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PeerMeshHintText">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="PeerMeshPlaceholderText">
+        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="PeerMeshButtonBase" parent="Widget.MaterialComponents.Button">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:paddingLeft">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/button_padding_vertical</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <style name="PeerMeshButtonPrimary" parent="PeerMeshButtonBase">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="PeerMeshButtonSecondary" parent="PeerMeshButtonBase">
+        <item name="backgroundTint">?attr/peerMeshSecondaryButtonSurface</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="strokeColor">?attr/colorPrimary</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+</resources>

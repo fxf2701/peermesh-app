@@ -1,0 +1,10 @@
+/var/log/disaster-app/relay.log /var/log/disaster-app/relay.err {
+  daily
+  rotate 7
+  missingok
+  notifempty
+  compress
+  delaycompress
+  copytruncate
+  create 0640 root root
+}

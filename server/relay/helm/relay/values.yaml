@@ -1,0 +1,72 @@
+replicaCount: 1
+
+image:
+  repository: disaster-app-relay
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+env:
+  - name: PORT
+    value: "8080"
+  - name: NODE_ENV
+    value: "production"
+
+resources: {}
+
+nameOverride: ""
+fullnameOverride: ""
+
+secrets:
+  create: true
+  existingSecret: ""
+  databaseUrl: ""
+  redisUrl: ""
+
+postgres:
+  enabled: true
+  image:
+    repository: postgres
+    tag: "16"
+    pullPolicy: IfNotPresent
+  service:
+    port: 5432
+  auth:
+    username: postgres
+    password: postgres
+    database: relay
+    existingSecret: ""
+    existingSecretKey: postgres-password
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: ""
+  resources: {}
+
+redis:
+  enabled: true
+  image:
+    repository: redis
+    tag: "7-alpine"
+    pullPolicy: IfNotPresent
+  service:
+    port: 6379
+  persistence:
+    enabled: false
+    size: 2Gi
+    storageClass: ""
+  resources: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: relay.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

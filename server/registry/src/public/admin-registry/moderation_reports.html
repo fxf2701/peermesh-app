@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registry Admin - Moderation Reports</title>
+    <link rel="stylesheet" href="/admin/assets/registry_admin.css" />
+  </head>
+  <body class="registry-admin">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PeerMesh</div>
+        <h1>Moderation Reports</h1>
+      </div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/relays">Relay Directory</a>
+        <a href="/admin/federation">Federation</a>
+        <a href="/admin/beta-program">Beta Program</a>
+        <a href="/admin/moderation-reports" class="active">Moderation Reports</a>
+        <a href="/admin/feedback">Feedback</a>
+        <a href="/admin/certificates">Certificates</a>
+        <a href="/admin/metrics">Metrics</a>
+        <button id="logout-button" type="button" class="ghost hidden">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="login-panel" class="panel narrow">
+        <h2>Admin Login</h2>
+        <form id="login-form" class="form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" value="admin" />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Client Moderation Reports</h2>
+              <p>Peer and message reports ingested by the registry moderation workspace.</p>
+            </div>
+            <button id="refresh-button" type="button">Refresh</button>
+          </div>
+          <div class="toolbar">
+            <select id="moderation-report-status">
+              <option value="">All statuses</option>
+              <option value="received">Received</option>
+              <option value="in_review">In Review</option>
+              <option value="resolved_actioned">Resolved Actioned</option>
+              <option value="resolved_no_action">Resolved No Action</option>
+              <option value="rejected_invalid">Rejected Invalid</option>
+            </select>
+            <select id="moderation-report-target-type">
+              <option value="">All target types</option>
+              <option value="peer">Peer</option>
+              <option value="message">Message</option>
+            </select>
+            <input id="moderation-report-group-id" placeholder="Filter by group id" />
+            <input id="moderation-report-reported-peer-id" placeholder="Filter by reported peer id" />
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Report</th>
+                  <th>Target</th>
+                  <th>Reason</th>
+                  <th>Reporter</th>
+                  <th>Reported Peer</th>
+                  <th>Status</th>
+                  <th>Received</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="moderation-reports-body"></tbody>
+            </table>
+          </div>
+          <div id="moderation-reports-pagination" class="pagination-bar"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/assets/registry_admin.js"></script>
+  </body>
+</html>

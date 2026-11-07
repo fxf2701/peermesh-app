@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="peerMeshHeaderSurface" format="color" />
+    <attr name="peerMeshNoticeSurface" format="color" />
+    <attr name="peerMeshCardStroke" format="color" />
+    <attr name="peerMeshMenuDivider" format="color" />
+    <attr name="peerMeshSecondaryButtonSurface" format="color" />
+    <attr name="peerMeshChatMessageSurface" format="color" />
+    <attr name="peerMeshChatMessageStroke" format="color" />
+    <attr name="peerMeshChatReplySurface" format="color" />
+    <attr name="peerMeshChatReplyStroke" format="color" />
+    <attr name="peerMeshChatMessageHighlightSurface" format="color" />
+
+    <declare-styleable name="NearbyRoomsLoadingDotsView">
+        <attr name="dotSizeDp" format="integer" />
+        <attr name="dotSpacingDp" format="integer" />
+    </declare-styleable>
+</resources>

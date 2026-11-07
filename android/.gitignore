@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+**/build/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Local SDK config
+local.properties
+
+# Signing / keys (sensitive)
+keystore.properties
+keystore/
+*.jks
+*.keystore
+*.p12
+
+# Google/Firebase config (often sensitive)
+google-services.json
+
+# Misc
+.DS_Store

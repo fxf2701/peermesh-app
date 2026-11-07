@@ -1,0 +1,1 @@
+{"ev":1,"id":"legacy-marker-del","type":"MAP.MARKER.DEL","actor":{"did":"did:legacy-owner"},"time":{"t":1700000400,"lt":13},"ref":{"root":null,"parent":null,"target":"legacy-marker-1"},"meta":null,"data":{"marker_id":"legacy-marker-1"}}

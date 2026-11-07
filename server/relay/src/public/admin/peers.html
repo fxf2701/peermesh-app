@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Federation Peers</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/peers" class="active">Federation</a>
+        <a href="/admin/banlist">Banlist</a>
+        <a href="/admin/reputation">Reputation</a>
+        <a href="/admin/audit">Audit Trail</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section
+        class="breadcrumbs"
+        data-breadcrumbs='[{"label":"Back to dashboard","href":"/admin/dashboard"}]'
+      ></section>
+      <section class="hero">
+        <h1>Federation Peers</h1>
+        <p class="muted">Live status of remote relays and sync health.</p>
+      </section>
+
+      <section class="grid">
+        <article class="card kpi">
+          <div class="kpi-label">Peers</div>
+          <div id="peers-total" class="kpi-value">--</div>
+          <div class="kpi-meta muted">Connected in last 24h</div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-label">Avg Lag</div>
+          <div id="peers-avg-lag" class="kpi-value">--</div>
+          <div class="kpi-meta muted">Local sync health</div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-label">Failures (10m)</div>
+          <div id="peers-failures" class="kpi-value">--</div>
+          <div class="kpi-meta muted">Local sync health</div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-label">Connected</div>
+          <div id="peers-connected" class="kpi-value">--</div>
+          <div class="kpi-meta muted">
+            Capacity <span id="peers-capacity">--</span> • TTL <span id="peers-heartbeat">--</span>s
+          </div>
+        </article>
+      </section>
+
+      <section class="card" id="self-relay-card">
+        <h2>This Relay</h2>
+        <div class="summary-list">
+          <div>
+            <div class="summary-label">Peer ID</div>
+            <div id="self-peer-id" class="summary-value">—</div>
+          </div>
+          <div>
+            <div class="summary-label">Peer URL</div>
+            <div id="self-peer-url" class="summary-value">—</div>
+          </div>
+          <div>
+            <div class="summary-label">Public Token</div>
+            <div id="self-public-token" class="summary-value">missing</div>
+            <div id="self-public-token-created" class="muted"></div>
+            <div id="self-token-edit" class="inline-edit hidden">
+              <input
+                type="text"
+                id="self-token-input"
+                placeholder="Enter public token"
+              />
+              <div class="inline-actions">
+                <button type="button" id="self-token-generate" class="pill-button">Generate</button>
+                <button type="button" id="self-token-save" class="pill-button">Save</button>
+                <button type="button" id="self-token-cancel" class="pill-button">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions-row">
+          <button type="button" id="self-token-create" class="pill-button">Create</button>
+          <button type="button" id="self-token-copy" class="pill-button hidden">Copy</button>
+          <button type="button" id="self-token-replace" class="pill-button hidden">Replace</button>
+          <button type="button" id="self-token-revoke" class="pill-button hidden">Revoke</button>
+        </div>
+        <div id="self-token-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Live Peers</h2>
+        <p class="muted">
+          Active peers plus join-ready relays that publish a public token.
+        </p>
+        <div class="filters">
+          <label>
+            Search (URL/Peer ID)
+            <input id="peers-search" type="text" placeholder="relay.example.com or peer-id" />
+          </label>
+        </div>
+        <table class="table" id="peers-table">
+          <thead>
+            <tr>
+              <th>Peer URL</th>
+              <th>Remote Conn/Cap</th>
+              <th>Trust</th>
+              <th>Last Seen</th>
+              <th>Status</th>
+              <th>Link</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="peers-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <details class="summary-card">
+          <summary>Inbound Peers (summary)</summary>
+          <p class="muted">Peers currently connecting to this relay.</p>
+          <table class="table" id="inbound-peers-table">
+            <thead>
+              <tr>
+                <th>Peer ID</th>
+                <th>Peer URL</th>
+                <th>Last Seen</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div id="inbound-peers-status" class="status"></div>
+        </details>
+      </section>
+
+      <section class="card">
+        <h2>Known Peers</h2>
+        <p class="muted">Saved mappings and contact list for past connections.</p>
+        <div id="peers-bounds-status" class="status"></div>
+        <form id="peer-join-form" class="grid-form">
+          <label>
+            Peer URL
+            <input type="url" name="peer_url" placeholder="https://relay.example.com" required />
+          </label>
+          <label>
+            Sync GIDs (optional)
+            <input type="text" name="sync_gids" placeholder="leave empty to sync all" />
+          </label>
+          <label>
+            Peer Token
+            <input type="text" name="peer_token" placeholder="Public token for connect" />
+          </label>
+          <button type="submit">Add Peer</button>
+        </form>
+        <div id="peer-join-status" class="status"></div>
+        <h3 class="muted">Known peer mappings</h3>
+        <p class="muted">
+          Configured mappings only. Live peers appear above after sync activity.
+        </p>
+        <table class="table" id="peer-mappings-table">
+          <thead>
+            <tr>
+              <th>Peer URL</th>
+              <th>Sync GIDs (All if empty)</th>
+              <th>Token</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Quick Actions</h2>
+        <div class="chip-row">
+          <a class="chip link-chip" href="/admin/banlist">Open Banlist</a>
+          <span class="chip">Peer Detail (coming soon)</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

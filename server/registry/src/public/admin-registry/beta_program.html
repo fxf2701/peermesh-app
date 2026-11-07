@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registry Admin - Beta Program</title>
+    <link rel="stylesheet" href="/admin/assets/registry_admin.css" />
+  </head>
+  <body class="registry-admin">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PeerMesh</div>
+        <h1>Beta Program</h1>
+      </div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/relays">Relay Directory</a>
+        <a href="/admin/federation">Federation</a>
+        <a href="/admin/beta-program" class="active">Beta Program</a>
+        <a href="/admin/moderation-reports">Moderation Reports</a>
+        <a href="/admin/feedback">Feedback</a>
+        <a href="/admin/certificates">Certificates</a>
+        <a href="/admin/metrics">Metrics</a>
+        <button id="logout-button" type="button" class="ghost hidden">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="login-panel" class="panel narrow">
+        <h2>Admin Login</h2>
+        <form id="login-form" class="form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" value="admin" />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Client Beta Program Config</h2>
+              <p>Control beta enablement, version prompts, and the lightweight What&apos;s New payload served to Android clients.</p>
+            </div>
+            <button id="refresh-button" type="button">Refresh</button>
+          </div>
+
+          <form id="beta-program-form" class="form">
+            <label class="checkbox-row">
+              <input id="beta-program-enabled" name="enabled" type="checkbox" />
+              <span>Beta Program enabled</span>
+            </label>
+            <label>
+              Season
+              <input id="beta-program-season" name="season" placeholder="Beta Season 1" />
+            </label>
+            <label>
+              Ends At
+              <input id="beta-program-ends-at" name="ends_at" placeholder="2026-08-31T23:59:59Z" />
+            </label>
+            <label>
+              Latest Version
+              <input id="beta-program-latest-version" name="latest_version" placeholder="0.9.3" />
+            </label>
+            <label>
+              Minimum Supported Version
+              <input id="beta-program-minimum-supported-version" name="minimum_supported_version" placeholder="0.9.0" />
+            </label>
+            <label>
+              Changelog
+              <textarea id="beta-program-changelog" name="changelog" rows="8" placeholder="One item per line"></textarea>
+            </label>
+            <label>
+              Reason
+              <textarea id="beta-program-reason" name="reason" rows="3" placeholder="Why is this Beta config changing?"></textarea>
+            </label>
+            <div class="actions">
+              <button type="submit">Save Beta Config</button>
+              <button id="beta-program-reset" type="button" class="ghost">Reload from Server</button>
+            </div>
+          </form>
+          <div id="beta-program-status" class="status"></div>
+        </section>
+
+        <section class="split">
+          <article class="panel">
+            <h2>Resolved Payload</h2>
+            <pre id="beta-program-output" class="code"></pre>
+          </article>
+          <article class="panel">
+            <h2>Notes</h2>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span>Source of truth</span>
+                <strong>Registry DB with env bootstrap fallback</strong>
+              </div>
+              <div class="detail-item">
+                <span>Client endpoint</span>
+                <strong>/v1/registry/client/beta-program</strong>
+              </div>
+              <div class="detail-item">
+                <span>Audit trail</span>
+                <strong>Saved as admin action `beta_program_updated`</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/assets/registry_admin.js"></script>
+  </body>
+</html>

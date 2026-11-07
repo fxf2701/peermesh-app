@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registry Admin - Feedback</title>
+    <link rel="stylesheet" href="/admin/assets/registry_admin.css" />
+  </head>
+  <body class="registry-admin">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PeerMesh</div>
+        <h1>Feedback</h1>
+      </div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/relays">Relay Directory</a>
+        <a href="/admin/federation">Federation</a>
+        <a href="/admin/beta-program">Beta Program</a>
+        <a href="/admin/moderation-reports">Moderation Reports</a>
+        <a href="/admin/feedback" class="active">Feedback</a>
+        <a href="/admin/certificates">Certificates</a>
+        <a href="/admin/metrics">Metrics</a>
+        <button id="logout-button" type="button" class="ghost hidden">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="login-panel" class="panel narrow">
+        <h2>Admin Login</h2>
+        <form id="login-form" class="form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" value="admin" />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Client Feedback</h2>
+              <p>Lightweight product feedback submitted from the Android beta app.</p>
+            </div>
+            <button id="refresh-button" type="button">Refresh</button>
+          </div>
+          <div class="toolbar">
+            <select id="feedback-category">
+              <option value="">All categories</option>
+              <option value="general">General</option>
+              <option value="bug">Bug</option>
+              <option value="feature_request">Feature Request</option>
+              <option value="nearby_rooms">Nearby Rooms</option>
+              <option value="groups">Groups</option>
+              <option value="maps_awareness">Maps &amp; Awareness</option>
+            </select>
+            <input id="feedback-search" placeholder="Search feedback, device, app version" />
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Feedback</th>
+                  <th>Category</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>Device</th>
+                  <th>Received</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="feedback-body"></tbody>
+            </table>
+          </div>
+          <div id="feedback-pagination" class="pagination-bar"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/assets/registry_admin.js"></script>
+  </body>
+</html>

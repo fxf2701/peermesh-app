@@ -1,0 +1,850 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 9,
+    "identityHash": "656424eedbfba1fd2d31bbc1bc15e71b",
+    "entities": [
+      {
+        "tableName": "events",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `gid` TEXT NOT NULL, `event_id` TEXT NOT NULL, `type` TEXT NOT NULL, `source` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `time_lt` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `ref_root` TEXT, `ref_parent` TEXT, `ref_target` TEXT, `ttl_s` INTEGER, `payload_json` TEXT NOT NULL, `inserted_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "event_id",
+            "columnName": "event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time_lt",
+            "columnName": "time_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ref_root",
+            "columnName": "ref_root",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ref_parent",
+            "columnName": "ref_parent",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ref_target",
+            "columnName": "ref_target",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ttl_s",
+            "columnName": "ttl_s",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "payload_json",
+            "columnName": "payload_json",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inserted_at",
+            "columnName": "inserted_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_events_gid_event_id",
+            "unique": true,
+            "columnNames": [
+              "gid",
+              "event_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_events_gid_event_id` ON `${TABLE_NAME}` (`gid`, `event_id`)"
+          },
+          {
+            "name": "index_events_gid_created_t",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "created_t"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_events_gid_created_t` ON `${TABLE_NAME}` (`gid`, `created_t`)"
+          },
+          {
+            "name": "index_events_gid_type",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "type"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_events_gid_type` ON `${TABLE_NAME}` (`gid`, `type`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "groups",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `kid` TEXT, `name` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`gid`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kid",
+            "columnName": "kid",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "keys",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `kid` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`gid`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kid",
+            "columnName": "kid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "chat_messages",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `message_id` TEXT NOT NULL, `text` TEXT NOT NULL, `status` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `reply_to` TEXT, `expires_at` INTEGER, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `message_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "message_id",
+            "columnName": "message_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reply_to",
+            "columnName": "reply_to",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "message_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_chat_messages_gid_created_t",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "created_t"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_chat_messages_gid_created_t` ON `${TABLE_NAME}` (`gid`, `created_t`)"
+          },
+          {
+            "name": "index_chat_messages_gid_status",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_chat_messages_gid_status` ON `${TABLE_NAME}` (`gid`, `status`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_layers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `layer_id` TEXT NOT NULL, `name` TEXT, `status` TEXT NOT NULL, `updated_t` INTEGER NOT NULL, PRIMARY KEY(`gid`, `layer_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "layer_id",
+            "columnName": "layer_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "layer_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_markers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `marker_id` TEXT NOT NULL, `layer_id` TEXT NOT NULL, `lat` REAL NOT NULL, `lon` REAL NOT NULL, `radius_m` REAL, `note` TEXT, `kind` TEXT, `status` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `expires_at` INTEGER, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `marker_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marker_id",
+            "columnName": "marker_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "layer_id",
+            "columnName": "layer_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lon",
+            "columnName": "lon",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "radius_m",
+            "columnName": "radius_m",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "marker_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_markers_gid_layer_id_status",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "layer_id",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_markers_gid_layer_id_status` ON `${TABLE_NAME}` (`gid`, `layer_id`, `status`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_marker_field_clock",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `marker_id` TEXT NOT NULL, `field` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `marker_id`, `field`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "marker_id",
+            "columnName": "marker_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "field",
+            "columnName": "field",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "marker_id",
+            "field"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_marker_field_clock_gid_marker_id",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "marker_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_marker_field_clock_gid_marker_id` ON `${TABLE_NAME}` (`gid`, `marker_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "map_areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `area_id` TEXT NOT NULL, `layer_id` TEXT NOT NULL, `geometry_json` TEXT NOT NULL, `note` TEXT, `kind` TEXT, `status` TEXT NOT NULL, `created_t` INTEGER NOT NULL, `updated_t` INTEGER NOT NULL, `actor_did` TEXT NOT NULL, `expires_at` INTEGER, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `area_id`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "area_id",
+            "columnName": "area_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "layer_id",
+            "columnName": "layer_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "geometry_json",
+            "columnName": "geometry_json",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_t",
+            "columnName": "created_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_t",
+            "columnName": "updated_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expires_at",
+            "columnName": "expires_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "area_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_map_areas_gid_layer_id_status",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "layer_id",
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_map_areas_gid_layer_id_status` ON `${TABLE_NAME}` (`gid`, `layer_id`, `status`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "relay_cursors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`relay_url` TEXT NOT NULL, `gid` TEXT NOT NULL, `cursor` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`relay_url`, `gid`))",
+        "fields": [
+          {
+            "fieldPath": "relay_url",
+            "columnName": "relay_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cursor",
+            "columnName": "cursor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "relay_url",
+            "gid"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "relay_push_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`relay_url` TEXT NOT NULL, `last_push_at` INTEGER NOT NULL, `last_push_event_id` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`relay_url`))",
+        "fields": [
+          {
+            "fieldPath": "relay_url",
+            "columnName": "relay_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_push_at",
+            "columnName": "last_push_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_push_event_id",
+            "columnName": "last_push_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "relay_url"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "user_profiles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gid` TEXT NOT NULL, `actor_did` TEXT NOT NULL, `display_name` TEXT NOT NULL, `avatar_id` TEXT, `updated_at` INTEGER NOT NULL, `last_event_id` TEXT NOT NULL, `last_event_t` INTEGER NOT NULL, `last_event_lt` INTEGER NOT NULL, `last_event_actor` TEXT NOT NULL, PRIMARY KEY(`gid`, `actor_did`))",
+        "fields": [
+          {
+            "fieldPath": "gid",
+            "columnName": "gid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actor_did",
+            "columnName": "actor_did",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "display_name",
+            "columnName": "display_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "avatar_id",
+            "columnName": "avatar_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_id",
+            "columnName": "last_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_t",
+            "columnName": "last_event_t",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_lt",
+            "columnName": "last_event_lt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "last_event_actor",
+            "columnName": "last_event_actor",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "gid",
+            "actor_did"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_profiles_gid_updated_at",
+            "unique": false,
+            "columnNames": [
+              "gid",
+              "updated_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_profiles_gid_updated_at` ON `${TABLE_NAME}` (`gid`, `updated_at`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '656424eedbfba1fd2d31bbc1bc15e71b')"
+    ]
+  }
+}

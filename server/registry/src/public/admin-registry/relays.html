@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registry Admin - Relay Directory</title>
+    <link rel="stylesheet" href="/admin/assets/registry_admin.css" />
+  </head>
+  <body class="registry-admin">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PeerMesh</div>
+        <h1>Relay Directory</h1>
+      </div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/relays" class="active">Relay Directory</a>
+        <a href="/admin/federation">Federation</a>
+        <a href="/admin/beta-program">Beta Program</a>
+        <a href="/admin/moderation-reports">Moderation Reports</a>
+        <a href="/admin/feedback">Feedback</a>
+        <a href="/admin/certificates">Certificates</a>
+        <a href="/admin/metrics">Metrics</a>
+        <button id="logout-button" type="button" class="ghost hidden">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="login-panel" class="panel narrow">
+        <h2>Admin Login</h2>
+        <form id="login-form" class="form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" value="admin" />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Relay Directory</h2>
+              <p>Manage trust, operational status and federation eligibility.</p>
+            </div>
+            <div class="actions">
+              <button id="refresh-button" type="button">Refresh</button>
+            </div>
+          </div>
+          <div class="toolbar">
+            <input id="relay-search" placeholder="Search relay, endpoint, region" />
+            <select id="relay-sort">
+              <option value="relay_id">Relay</option>
+              <option value="last_seen">Last Seen</option>
+              <option value="trust_level">Trust</option>
+              <option value="status">Status</option>
+              <option value="region">Region</option>
+              <option value="created_at">Created</option>
+            </select>
+            <select id="relay-order">
+              <option value="asc">Asc</option>
+              <option value="desc">Desc</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Relay</th>
+                  <th>Endpoint</th>
+                  <th>Region</th>
+                  <th>Trust</th>
+                  <th>Status</th>
+                  <th>Federation</th>
+                  <th>Last Seen</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="relays-body"></tbody>
+            </table>
+          </div>
+          <div id="relay-pagination" class="pagination-bar"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Audit Log</h2>
+              <p>Recent relay governance changes.</p>
+            </div>
+            <div class="toolbar">
+              <a id="audit-export-csv" class="ghost" href="/admin/api/audit/export?format=csv">Export CSV</a>
+              <a id="audit-export-jsonl" class="ghost" href="/admin/api/audit/export?format=jsonl">Export JSONL</a>
+              <select id="audit-sort">
+                <option value="created_at">Time</option>
+                <option value="action">Action</option>
+                <option value="actor">Actor</option>
+                <option value="resource_type">Resource Type</option>
+                <option value="resource_id">Resource ID</option>
+                <option value="result">Result</option>
+              </select>
+              <select id="audit-order">
+                <option value="desc">Desc</option>
+                <option value="asc">Asc</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Actor</th>
+                  <th>Action</th>
+                  <th>Resource</th>
+                  <th>Result</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id="audit-body"></tbody>
+            </table>
+          </div>
+          <div id="audit-pagination" class="pagination-bar"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/assets/registry_admin.js"></script>
+  </body>
+</html>

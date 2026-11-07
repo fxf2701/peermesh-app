@@ -1,0 +1,1 @@
+{"ev":1,"id":"unknown-action-1","type":"MAP.ITEM.CONFIRM","actor":{"did":"did:new-peer"},"time":{"t":1700001300,"lt":51},"ref":{"root":null,"parent":null,"target":"legacy-marker-1"},"meta":null,"data":{"map_domain_v":1,"item_type":"marker","map_action":"confirm","action_id":"unknown-action-1","action_t":1700001300,"information_source":"firsthand","action_note":"Confirmed"}}

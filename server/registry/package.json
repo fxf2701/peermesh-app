@@ -1,0 +1,36 @@
+{
+  "name": "peermesh-registry",
+  "version": "0.1.0",
+  "description": "Small SQLite-backed relay registry service for PeerMesh.",
+  "main": "src/index.js",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "admin:hash-password": "node scripts/hash-admin-password.js",
+    "start": "node src/index.js",
+    "check": "node --check src/*.js",
+    "test:schema-migration": "node scripts/test-schema-migration.js",
+    "test:signing": "node scripts/test-signing.js",
+    "test:signed-heartbeat-compat": "node scripts/test-signed-heartbeat-compat.js",
+    "test:smoke": "node scripts/test-smoke.js",
+    "test:federation-sessions": "node scripts/test-federation-sessions.js",
+    "test:client-access-grants": "node scripts/test-client-access-grants.js",
+    "test:client-abuse-reports": "node scripts/test-client-abuse-reports.js",
+    "test:client-beta-program": "node scripts/test-client-beta-program.js",
+    "test:client-feedback": "node scripts/test-client-feedback.js",
+    "test:client-moderation-reports": "node scripts/test-client-moderation-reports.js",
+    "test:admin-federation": "node scripts/test-admin-federation.js",
+    "test:admin-metrics": "node scripts/test-admin-metrics.js",
+    "test:admin-reason-guards": "node scripts/test-admin-reason-guards.js",
+    "test:admin-onboarding-bundle": "node scripts/test-admin-onboarding-bundle.js",
+    "test:admin-pagination": "node scripts/test-admin-pagination.js",
+    "test:admin-beta-program": "node scripts/test-admin-beta-program.js",
+    "test:admin-feedback": "node scripts/test-admin-feedback.js",
+    "test:audit-export": "node scripts/test-audit-export.js",
+    "test:trust-history": "node scripts/test-trust-history.js",
+    "test:admin-federation-browser": "node scripts/test-admin-federation-browser.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1"
+  }
+}

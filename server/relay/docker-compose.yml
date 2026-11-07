@@ -1,0 +1,130 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: peermesh-relay-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: relay
+    volumes:
+      - ./config/init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+      - ./migrations/001_initial.up.sql:/docker-entrypoint-initdb.d/001_initial.up.sql:ro
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_BIND_IP:-127.0.0.1}:5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d relay"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - relay-network
+
+  relay:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peermesh-relay
+    env_file:
+      - ./.env
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data
+      - ./backups:/var/backups/relay
+      - ./logs:/var/log/relay
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${RELAY_BIND_IP:-127.0.0.1}:${PORT:-8080}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - relay-network
+
+  relay_backup:
+    profiles: ["backup"]
+    image: postgres:16
+    container_name: peermesh-relay-backup
+    env_file:
+      - ./.env
+    environment:
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+      BACKUP_INTERVAL_SECONDS: ${BACKUP_INTERVAL_SECONDS:-86400}
+      BACKUP_MAX_AGE_SECONDS: ${BACKUP_MAX_AGE_SECONDS:-172800}
+    volumes:
+      - ./backups:/backup
+      - ./scripts/backup-healthcheck.sh:/usr/local/bin/backup-healthcheck.sh:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        while true; do
+          stamp=$$(date -u +"%Y%m%dT%H%M%SZ")
+          echo "[relay_backup] starting backup at $$stamp"
+          pg_dump -Fc "$$DATABASE_URL" > "/backup/relay_$${stamp}.dump"
+          sha256sum "/backup/relay_$${stamp}.dump" > "/backup/relay_$${stamp}.dump.sha256"
+          echo "[relay_backup] finished backup at $$(date -u +"%Y%m%dT%H%M%SZ")"
+          touch "/backup/last_backup.ok"
+          if [ -n "$$BACKUP_RETENTION_DAYS" ]; then
+            find /backup -type f -name "relay_*.dump" -mtime +"$$BACKUP_RETENTION_DAYS" -delete
+            find /backup -type f -name "relay_*.dump.sha256" -mtime +"$$BACKUP_RETENTION_DAYS" -delete
+          fi
+          sleep "$$BACKUP_INTERVAL_SECONDS"
+        done
+    healthcheck:
+      test: ["CMD-SHELL", "/usr/local/bin/backup-healthcheck.sh"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - relay-network
+
+  prometheus:
+    profiles: ["metrics"]
+    image: prom/prometheus:v2.49.1
+    container_name: peermesh-relay-prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./config/relay_alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+    ports:
+      - "${PROMETHEUS_BIND_IP:-127.0.0.1}:9090:9090"
+    restart: unless-stopped
+    networks:
+      - relay-network
+
+  grafana:
+    profiles: ["metrics"]
+    image: grafana/grafana:10.2.2
+    container_name: peermesh-relay-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_SECURITY_ADMIN_PASSWORD}
+    volumes:
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "${GRAFANA_BIND_IP:-127.0.0.1}:3000:3000"
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - relay-network
+
+volumes:
+  pg_data:
+
+networks:
+  relay-network:
+    driver: bridge

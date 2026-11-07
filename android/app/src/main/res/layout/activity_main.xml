@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_app_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:id="@+id/main_notifications_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_warning_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/main_notifications_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/notifications_off_banner"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <Button
+                    android:id="@+id/main_notifications_action"
+                    style="@style/PeerMeshButtonSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notifications_enable" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/group_join_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_join_title"
+                android:textColor="?attr/colorOnBackground"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/group_gid_input"
+                style="@style/PeerMeshPlaceholderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/group_invite_hint"
+                android:inputType="textNoSuggestions"
+                android:textColor="?attr/colorOnSurface" />
+
+            <Button
+                android:id="@+id/group_paste_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                style="@style/PeerMeshButtonSecondary"
+                android:text="@string/scan_qr_code" />
+
+            <TextView
+                android:id="@+id/group_paste_hint"
+                style="@style/PeerMeshHintText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/group_join_invite_hint"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/group_display_name_input"
+                style="@style/PeerMeshPlaceholderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/group_display_name_hint"
+                android:inputType="textPersonName"
+                android:textColor="?attr/colorOnSurface" />
+
+            <Button
+                android:id="@+id/group_join_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/group_join" />
+
+            <TextView
+                android:id="@+id/group_create_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/group_create_hint"
+                android:textColor="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/groups_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/groups_title"
+                android:textColor="?attr/colorOnBackground"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/groups_empty"
+                style="@style/PeerMeshHintText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/groups_empty"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/groups_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/drawer_menu"
+        app:itemTextAppearance="@style/PeerMeshDrawerItemText"
+        app:itemHorizontalPadding="20dp"
+        app:itemVerticalPadding="12dp"
+        app:itemIconPadding="0dp"
+        app:itemBackground="@drawable/drawer_item_background"
+        app:divider="?attr/peerMeshMenuDivider"
+        app:subheaderTextAppearance="@style/PeerMeshDrawerItemText"
+        app:itemTextColor="?attr/colorOnSurface"
+        app:itemIconTint="?attr/colorOnSurface" />
+</androidx.drawerlayout.widget.DrawerLayout>

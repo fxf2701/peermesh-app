@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Node/server
+node_modules/
+.env
+.env.*
+
+# iOS
+ios/DerivedData/
+ios/Pods/
+ios/*.xcworkspace
+
+# Build outputs
+build/
+dist/
+
+# Android signing
+android/keystore.properties
+android/keystore/
+*.jks
+*.keystore
+
+# Local BLE debug artifacts
+tmp_ble/

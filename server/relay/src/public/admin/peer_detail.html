@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Peer Detail</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/peers" class="active">Federation</a>
+        <a href="/admin/banlist">Banlist</a>
+        <a href="/admin/reputation">Reputation</a>
+        <a href="/admin/audit">Audit Trail</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section
+        class="breadcrumbs"
+        data-breadcrumbs='[{"label":"Back to peers","href":"/admin/peers"}]'
+      ></section>
+      <section class="hero">
+        <h1 id="peer-title">Peer Detail</h1>
+        <p class="muted" id="peer-subtitle">Deep dive on sync history and current status.</p>
+      </section>
+
+      <section class="grid">
+        <article class="card kpi">
+          <div class="kpi-label">Status</div>
+          <div id="peer-status" class="kpi-value">--</div>
+          <div class="kpi-meta muted">Sync health</div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-label">Cursor Lag</div>
+          <div id="peer-lag" class="kpi-value">--</div>
+          <div class="kpi-meta muted">Seconds behind</div>
+        </article>
+        <article class="card kpi">
+          <div class="kpi-label">Backpressure</div>
+          <div id="peer-backpressure" class="kpi-value">--</div>
+          <div class="kpi-meta muted">Queue depth</div>
+        </article>
+      </section>
+
+      <section class="card split">
+        <div>
+          <h2>Current Snapshot</h2>
+          <div class="summary-list">
+            <div>
+              <div class="summary-label">Peer URL</div>
+              <div id="peer-url" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Remote Connected</div>
+              <div id="peer-remote-connected" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Remote Capacity</div>
+              <div id="peer-remote-capacity" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Remote TTL</div>
+              <div id="peer-remote-ttl" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Last Sync</div>
+              <div id="peer-last-sync" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Last Success</div>
+              <div id="peer-last-success" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Last Error</div>
+              <div id="peer-last-error" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Auto Sync</div>
+              <div id="peer-auto-sync" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Sync GIDs (All if empty)</div>
+              <div id="peer-sync-gids" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Last Seen</div>
+              <div id="peer-last-seen" class="summary-value">--</div>
+            </div>
+            <div>
+              <div class="summary-label">Online</div>
+              <div id="peer-online-status" class="summary-value">--</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2>Controls</h2>
+          <div class="stack">
+            <button id="peer-resync" type="button">Trigger Resync</button>
+            <button id="peer-clear-backoff" type="button">Clear Backoff</button>
+            <button id="peer-refresh" type="button">Refresh Now</button>
+            <div id="peer-control-status" class="status"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Recent Sync Attempts</h2>
+        <div class="chart-block">
+          <div class="chart-title">Lag Trend (last 12)</div>
+          <div id="peer-history-chart" class="chart"></div>
+          <div id="peer-history-empty" class="muted">No sync history yet.</div>
+          <div id="peer-history-lag-missing" class="muted hidden">Lag unavailable (missing cursor).</div>
+        </div>
+        <table class="table" id="peer-history-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Result</th>
+              <th>Lag (s)</th>
+              <th>Error</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="peer-detail-status" class="status"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

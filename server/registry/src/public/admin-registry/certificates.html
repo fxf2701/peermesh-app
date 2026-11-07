@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registry Admin - Certificates</title>
+    <link rel="stylesheet" href="/admin/assets/registry_admin.css" />
+  </head>
+  <body class="registry-admin">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">PeerMesh</div>
+        <h1>Certificates</h1>
+      </div>
+      <nav>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/relays">Relay Directory</a>
+        <a href="/admin/federation">Federation</a>
+        <a href="/admin/beta-program">Beta Program</a>
+        <a href="/admin/moderation-reports">Moderation Reports</a>
+        <a href="/admin/feedback">Feedback</a>
+        <a href="/admin/certificates" class="active">Certificates</a>
+        <a href="/admin/metrics">Metrics</a>
+        <button id="logout-button" type="button" class="ghost hidden">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <section id="login-panel" class="panel narrow">
+        <h2>Admin Login</h2>
+        <form id="login-form" class="form">
+          <label>
+            Username
+            <input name="username" autocomplete="username" value="admin" />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Relay Identity Certificates</h2>
+              <p>Issue, renew and revoke registry identity certificates.</p>
+            </div>
+            <button id="refresh-button" type="button">Refresh</button>
+          </div>
+          <form id="certificate-form" class="inline-form">
+            <input name="relay_id" placeholder="Relay ID" required />
+            <input name="reason" placeholder="Reason" />
+            <button type="submit">Issue Certificate</button>
+          </form>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Relay</th>
+                  <th>Status</th>
+                  <th>Issued At</th>
+                  <th>Expires At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="certificates-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/assets/registry_admin.js"></script>
+  </body>
+</html>

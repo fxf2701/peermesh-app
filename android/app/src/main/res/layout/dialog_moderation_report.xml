@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/moderation_note_input"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/moderation_note_hint"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:minLines="3"
+        android:textColor="?attr/colorOnSurface" />
+
+    <CheckBox
+        android:id="@+id/moderation_include_plaintext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:buttonTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnSurface"
+        android:text="@string/moderation_include_plaintext" />
+
+    <CheckBox
+        android:id="@+id/moderation_also_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:buttonTint="?attr/colorPrimary"
+        android:textColor="?attr/colorOnSurface"
+        android:text="@string/moderation_also_block" />
+
+    <TextView
+        android:id="@+id/moderation_disclosure_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp" />
+</LinearLayout>

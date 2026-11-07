@@ -1,0 +1,7 @@
+run_id,boundary,item_or_batch_id,work_location,post_boundary_state,evidence,confidence
+source_baseline,transport cleanup,unknown,pendingByDevice,preserved,cleanupConnection(closeQueue=false) retains queue,source-proven
+source_baseline,transport cleanup,unknown,staged/held,preserved,deferred queues retained and ENQUEUE reposted,source-proven
+source_baseline,active packet interrupted,unknown,activePendingPacketByAddress,failed/recoverable,failInterruptedActivePacket invoked before removal,source-proven
+source_baseline,hard restart,unknown,pending/staged/held,cleared in memory,clearRuntimeState clears queues after stop,source-proven
+source_baseline,hard restart,unknown,durable dispatcher/database,rehydration required,closure says eventual convergence; DB trace not supplied,not-proven
+source_baseline,status 133,unknown,item/send state,backoff + retry + cleanup,no direct durable loss path found,source-proven

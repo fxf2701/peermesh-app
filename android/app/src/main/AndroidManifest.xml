@@ -1,0 +1,181 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".PeerMeshApp"
+        android:allowBackup="${appAllowBackup}"
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="${appUsesCleartextTraffic}"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PeerMesh">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="peermesh"
+                    android:host="join" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".QrScanActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PeerMesh.QrScanDialog" />
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CrashReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BetaProgramWhatsNewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BetaProgramInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdditionalNoticesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProUnlockActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupMembersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupBlockedPeersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyRoomsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyRoomActivity"
+            android:exported="false" />
+        <activity android:name=".NearbyPrivateInvitationComposerActivity" android:exported="false" />
+        <activity
+            android:name=".NearbyPrivateGroupInvitationViewerActivity"
+            android:exported="false" />
+        <activity android:name=".NearbyPublicInvitationComposerActivity" android:exported="false" />
+        <activity
+            android:name=".NearbyPublicGroupInvitationViewerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyRoomInvitationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupMapActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".map.presentation.detail.MapItemDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SharedTrailsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".TrailReplayActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".TrustedContactsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrailPlaybackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StatisticsActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".ble.BleForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+        <service
+            android:name=".relay.RelaySyncService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+        <service
+            android:name=".TrailForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+        <service
+            android:name=".debug.ActivityLogCaptureService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <receiver
+            android:name=".debug.ActivityLogBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

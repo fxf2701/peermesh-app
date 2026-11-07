@@ -1,0 +1,1 @@
+{"ev":1,"id":"legacy-area-del","type":"MAP.AREA.DEL","actor":{"did":"did:legacy-owner"},"time":{"t":1700000401,"lt":23},"ref":{"root":null,"parent":null,"target":"legacy-area-1"},"meta":null,"data":{"area_id":"legacy-area-1"}}

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Dashboard</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard" class="active">Dashboard</a>
+        <a href="/admin/peers">Federation</a>
+        <a href="/admin/banlist">Banlist</a>
+        <a href="/admin/reputation">Reputation</a>
+        <a href="/admin/audit">Audit Trail</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section class="hero">
+        <h1>Dashboard</h1>
+        <p class="muted">Quick snapshot and operator shortcuts.</p>
+      </section>
+
+      <section class="card" id="dashboard-metrics-card">
+        <h2>Operator Snapshot</h2>
+        <p class="muted">Health and live metrics at a glance.</p>
+        <div class="grid">
+          <article class="kpi">
+            <div class="kpi-label">Health</div>
+            <div id="metrics-health" class="kpi-value">--</div>
+            <div class="kpi-meta muted">Service health</div>
+          </article>
+          <article class="kpi">
+            <div class="kpi-label">Ready</div>
+            <div id="metrics-ready" class="kpi-value">--</div>
+            <div class="kpi-meta muted">Readiness</div>
+          </article>
+          <article class="kpi">
+            <div class="kpi-label">Requests/s</div>
+            <div id="metrics-requests-rate" class="kpi-value">--</div>
+            <div class="kpi-meta muted">Traffic rate</div>
+          </article>
+          <article class="kpi">
+            <div class="kpi-label">Error Rate</div>
+            <div id="metrics-error-rate" class="kpi-value">--</div>
+            <div class="kpi-meta muted">Errors / requests</div>
+          </article>
+          <article class="kpi">
+            <div class="kpi-label">DB Pool</div>
+            <div id="metrics-db-pool" class="kpi-value">--</div>
+            <div class="kpi-meta muted">In use / total</div>
+          </article>
+          <article class="kpi">
+            <div class="kpi-label">Federation Lag</div>
+            <div id="metrics-federation-lag" class="kpi-value">--</div>
+            <div class="kpi-meta muted">Max cursor lag (s)</div>
+          </article>
+          <article class="kpi">
+            <div class="kpi-label">Rate Limit Spike</div>
+            <div id="metrics-rate-spike" class="kpi-value">--</div>
+            <div class="kpi-meta muted">Spike active</div>
+          </article>
+        </div>
+        <div id="dashboard-metrics-status" class="status"></div>
+        <div id="dashboard-metrics-updated" class="muted"></div>
+      </section>
+
+      <section class="card" id="backup-status-card">
+        <h2>Backup Status</h2>
+        <p class="muted">Latest backup health and restore drill info.</p>
+        <div class="summary-list">
+          <div>
+            <div class="summary-label">Last Backup</div>
+            <div id="backup-last-time" class="summary-value">—</div>
+            <div id="backup-age" class="muted"></div>
+          </div>
+          <div>
+            <div class="summary-label">Status</div>
+            <div id="backup-last-status" class="pill offline">--</div>
+          </div>
+          <div>
+            <div class="summary-label">Last Restore Drill</div>
+            <div id="backup-restore-drill" class="summary-value">—</div>
+          </div>
+        </div>
+        <div id="backup-status-message" class="status"></div>
+      </section>
+
+      <section class="card" id="retention-status-card">
+        <h2>Retention &amp; Cleanup</h2>
+        <p class="muted">Current retention profile and last cleanup run.</p>
+        <div class="summary-list">
+          <div>
+            <div class="summary-label">Profile</div>
+            <div id="retention-profile" class="summary-value">—</div>
+          </div>
+          <div>
+            <div class="summary-label">Cleanup Interval</div>
+            <div id="retention-interval" class="summary-value">—</div>
+          </div>
+          <div>
+            <div class="summary-label">Last Cleanup</div>
+            <div id="retention-last-cleanup" class="summary-value">—</div>
+            <div id="retention-last-duration" class="muted"></div>
+          </div>
+          <div>
+            <div class="summary-label">Next Run</div>
+            <div id="retention-next-run" class="summary-value">—</div>
+          </div>
+        </div>
+        <div id="retention-status-message" class="status"></div>
+      </section>
+
+      <section class="card" id="alerts-status-card">
+        <h2>Alerts &amp; Incidents</h2>
+        <p class="muted">Active alerts and recent incidents.</p>
+        <table class="table" id="alerts-table">
+          <thead>
+            <tr>
+              <th>Alert</th>
+              <th>Severity</th>
+              <th>Started</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="section-label">Recent incidents</div>
+        <table class="table" id="incidents-table">
+          <thead>
+            <tr>
+              <th>Incident</th>
+              <th>Acknowledged</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="section-label">Runbooks</div>
+        <div class="actions-row">
+          <a class="pill-link" href="/admin/runbooks/incident-response.pdf">
+            Incident Response
+          </a>
+          <a class="pill-link" href="/admin/runbooks/backup-restore.pdf">
+            Backup &amp; Restore
+          </a>
+          <a class="pill-link" href="/admin/runbooks/deploy-rollback.pdf">
+            Deploy &amp; Rollback
+          </a>
+        </div>
+        <div id="alerts-status-message" class="status"></div>
+      </section>
+
+      <section class="card" id="metrics-detail-card">
+        <h2>Metrics Detail</h2>
+        <p class="muted">Domain-level metrics for quick diagnosis.</p>
+        <div class="actions-row">
+          <button type="button" class="chip-button active" data-metrics-domain="traffic">
+            Traffic
+          </button>
+          <button type="button" class="chip-button" data-metrics-domain="db">Database</button>
+          <button type="button" class="chip-button" data-metrics-domain="federation">
+            Federation
+          </button>
+          <button type="button" class="chip-button" data-metrics-domain="rate_limit">
+            Rate Limit
+          </button>
+          <button type="button" id="metrics-detail-refresh" class="pill-button">
+            Refresh
+          </button>
+        </div>
+        <div id="metrics-detail-status" class="status"></div>
+        <table class="table" id="metrics-detail-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="metrics-detail-updated" class="muted"></div>
+      </section>
+
+      <section class="card">
+        <h2>Quick Links</h2>
+        <p class="muted">Jump to common operator workflows.</p>
+        <div class="chip-row">
+          <a class="chip link-chip" href="/admin/peers">Federation Peers</a>
+          <a class="chip link-chip" href="/admin/banlist">Banlist</a>
+          <a class="chip link-chip" href="/admin/reputation">Reputation</a>
+          <a class="chip link-chip" href="/admin/audit">Audit Trail</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Account</h2>
+        <div class="summary-list">
+          <div>
+            <div class="summary-label">Username</div>
+            <div id="account-username" class="summary-value">—</div>
+          </div>
+        </div>
+        <div class="actions-row">
+          <button type="button" id="account-change-password" class="pill-button">
+            Change Password
+          </button>
+          <button type="button" id="account-logout" class="pill-button">
+            Logout
+          </button>
+        </div>
+        <div id="account-status" class="status"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

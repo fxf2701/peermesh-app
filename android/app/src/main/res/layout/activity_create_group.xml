@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_app_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/create_group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_create_title"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/group_name_input"
+            style="@style/PeerMeshPlaceholderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/group_name_hint"
+            android:inputType="textCapWords"
+            android:textColor="?attr/colorOnSurface" />
+
+        <TextView
+            android:id="@+id/group_create_invite_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_create_invite_hint"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <EditText
+            android:id="@+id/group_display_name_input"
+            style="@style/PeerMeshPlaceholderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/group_display_name_hint"
+            android:inputType="textPersonName"
+            android:textColor="?attr/colorOnSurface" />
+
+        <TextView
+            android:id="@+id/group_environment_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/group_environment_label"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/group_environment_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/group_environment_urban"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="?attr/colorPrimary"
+                android:text="@string/group_environment_urban"
+                android:textColor="?attr/colorOnSurface" />
+
+            <RadioButton
+                android:id="@+id/group_environment_outdoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:buttonTint="?attr/colorPrimary"
+                android:text="@string/group_environment_outdoor"
+                android:textColor="?attr/colorOnSurface" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/user_avatar_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/user_avatar_label"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/user_avatar_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/avatar_cat"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/avatar_option_background"
+                android:contentDescription="@string/avatar_cat"
+                android:gravity="center"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/avatar_dog"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/avatar_option_background"
+                android:contentDescription="@string/avatar_dog"
+                android:gravity="center"
+                android:text="▾"
+                android:textSize="20sp"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/avatar_fox"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/avatar_option_background"
+                android:contentDescription="@string/avatar_fox"
+                android:gravity="center"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/avatar_bear"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/avatar_option_background"
+                android:contentDescription="@string/avatar_bear"
+                android:gravity="center"
+                android:text=""
+                android:textSize="20sp"
+                android:textColor="?attr/colorOnSurface" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/group_create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/group_create" />
+    </LinearLayout>
+</LinearLayout>

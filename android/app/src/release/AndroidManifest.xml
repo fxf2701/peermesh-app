@@ -1,0 +1,21 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission
+        android:name="android.permission.RECEIVE_BOOT_COMPLETED"
+        tools:node="remove" />
+
+    <application>
+        <activity
+            android:name=".TestActivity"
+            tools:node="remove" />
+
+        <service
+            android:name=".debug.ActivityLogCaptureService"
+            tools:node="remove" />
+
+        <receiver
+            android:name=".debug.ActivityLogBootReceiver"
+            tools:node="remove" />
+    </application>
+</manifest>

@@ -1,0 +1,30 @@
+services:
+  registry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peermesh-registry
+    env_file:
+      - ./.env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - /opt/peermesh/secrets:/run/peermesh-secrets:ro
+    ports:
+      - "${REGISTRY_BIND_IP:-127.0.0.1}:${REGISTRY_HOST_PORT:-8090}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >
+          fetch('http://127.0.0.1:8080/healthz').then((res) => {
+            if (!res.ok) process.exit(1);
+          }).catch(() => process.exit(1))
+    networks:
+      - peermesh-net
+
+networks:
+  peermesh-net:
+    external: true

@@ -1,0 +1,3 @@
+sdk.dir=/home/truong/Android/Sdk
+PEERMESH_REGISTRY_BASE_URL=https://registry.peermesh.app
+PEERMESH_REGISTRY_REQUEST_SIGNATURE_SECRET=CHANGE_ME

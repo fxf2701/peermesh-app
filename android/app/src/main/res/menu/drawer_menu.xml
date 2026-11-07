@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/menu_nearby_rooms"
+        android:title="@string/menu_nearby_rooms" />
+    <item
+        android:id="@+id/menu_trails"
+        android:title="@string/menu_trails" />
+    <item
+        android:id="@+id/menu_settings"
+        android:title="@string/menu_settings" />
+    <item
+        android:id="@+id/menu_statistics"
+        android:title="@string/menu_statistics" />
+    <item
+        android:id="@+id/menu_about"
+        android:title="@string/menu_about" />
+    <item
+        android:id="@+id/menu_test"
+        android:title="@string/menu_test" />
+</menu>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <h1>Relay Admin</h1>
+        <p>Internal console for relay operators.</p>
+      </header>
+
+      <section class="card">
+        <h2>Login</h2>
+        <form id="login-form">
+          <label>
+            Username
+            <input type="text" name="username" autocomplete="username" required />
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-status" class="status"></div>
+      </section>
+
+      <section class="card hidden" id="session-card">
+        <h2>Session</h2>
+        <button id="logout-btn">Logout</button>
+        <div id="session-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Reputation</h2>
+        <p class="hint">Use API endpoints to manage reputation entries.</p>
+        <pre class="code">GET /admin/api/reputation</pre>
+        <pre class="code">POST /admin/api/reputation</pre>
+      </section>
+    </main>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

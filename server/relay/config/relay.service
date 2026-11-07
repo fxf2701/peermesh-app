@@ -1,0 +1,18 @@
+[Unit]
+Description=Disaster App Relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/disaster-app/server
+EnvironmentFile=/opt/disaster-app/server/.env
+ExecStart=/usr/bin/node /opt/disaster-app/server/relay/src/index.js
+Restart=on-failure
+RestartSec=5
+LogsDirectory=disaster-app
+StandardOutput=append:/var/log/disaster-app/relay.log
+StandardError=append:/var/log/disaster-app/relay.err
+
+[Install]
+WantedBy=multi-user.target

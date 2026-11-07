@@ -1,0 +1,39 @@
+# Node
+node_modules/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Coverage
+coverage/
+
+# Build outputs
+build/
+dist/
+
+# Runtime data
+data/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Backups
+backups/
+backups_2/
+
+# Export
+export/
+
+# Admin auth
+config/admin_auth.json
+/relay/config/admin_auth.json
+/registry/config/admin_credentials.dev.json

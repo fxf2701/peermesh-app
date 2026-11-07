@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <EditText
+        android:id="@+id/marker_lat"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/map_lat_hint"
+        android:inputType="numberDecimal|numberSigned"
+        android:textColor="?attr/colorOnSurface" />
+
+    <EditText
+        android:id="@+id/marker_lon"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/map_lon_hint"
+        android:inputType="numberDecimal|numberSigned"
+        android:textColor="?attr/colorOnSurface" />
+
+    <EditText
+        android:id="@+id/marker_radius"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/map_radius_hint"
+        android:inputType="numberDecimal"
+        android:textColor="?attr/colorOnSurface" />
+
+    <Spinner
+        android:id="@+id/marker_category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/marker_category_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="?attr/colorOnSurface"
+        android:visibility="gone" />
+
+    <Spinner
+        android:id="@+id/marker_kind_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/marker_ttl_minutes"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/map_ttl_minutes_hint"
+        android:inputType="number"
+        android:textColor="?attr/colorOnSurface" />
+
+    <RadioGroup
+        android:id="@+id/marker_confidence_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+    <RadioButton
+        android:id="@+id/marker_conf_observed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_conf_observed"
+        android:textColor="?attr/colorOnSurface" />
+
+    <RadioButton
+        android:id="@+id/marker_conf_reported"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_conf_reported"
+        android:textColor="?attr/colorOnSurface" />
+
+    <RadioButton
+        android:id="@+id/marker_conf_uncertain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_creation_source_uncertain"
+        android:textColor="?attr/colorOnSurface"
+        android:visibility="gone" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/marker_label"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/map_label_hint"
+        android:inputType="text"
+        android:maxLength="5"
+        android:textColor="?attr/colorOnSurface" />
+
+    <EditText
+        android:id="@+id/marker_note"
+        style="@style/PeerMeshPlaceholderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/map_note_hint"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:textColor="?attr/colorOnSurface" />
+
+    <TextView
+        android:id="@+id/marker_readonly_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/marker_removal_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/marker_removal_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/marker_request_removal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/PeerMeshButtonSecondary"
+            android:text="@string/map_removal_request" />
+
+        <Button
+            android:id="@+id/marker_cancel_removal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            style="@style/PeerMeshButtonSecondary"
+            android:text="@string/map_removal_cancel" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/marker_edit_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/map_edit_window_notice"
+        android:textColor="@color/peer_mesh_text_secondary"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/marker_contrib_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/map_contrib_title"
+        android:textColor="?attr/colorOnSurface"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/marker_contrib_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="4dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/marker_contrib_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/map_contrib_more"
+        android:textColor="?attr/colorOnSurface"
+        android:textColorLink="?attr/colorSecondary"
+        android:textSize="12sp"
+        android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

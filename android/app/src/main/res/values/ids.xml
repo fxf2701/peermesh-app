@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="menu_test" />
+    <item type="id" name="menu_home" />
+    <item type="id" name="menu_nearby_rooms" />
+    <item type="id" name="menu_trails" />
+</resources>

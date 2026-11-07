@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Reputation</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/peers">Federation</a>
+        <a href="/admin/banlist">Banlist</a>
+        <a href="/admin/reputation" class="active">Reputation</a>
+        <a href="/admin/audit">Audit Trail</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section
+        class="breadcrumbs"
+        data-breadcrumbs='[{"label":"Back to dashboard","href":"/admin/dashboard"}]'
+      ></section>
+      <section class="hero">
+        <h1>Reputation</h1>
+        <p class="muted">Track peer trust scores and notes.</p>
+      </section>
+
+      <section class="card">
+        <h2>Add Reputation</h2>
+        <form id="reputation-form" class="grid-form">
+          <label>
+            Peer ID
+            <input type="text" name="peer_id" placeholder="peer-id" required />
+          </label>
+          <label>
+            Score
+            <input type="number" name="score" placeholder="0" />
+          </label>
+          <label>
+            Note
+            <input type="text" name="note" placeholder="Optional note" />
+          </label>
+          <button type="submit">Add</button>
+        </form>
+        <div id="reputation-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Entries</h2>
+        <div class="filters">
+          <label>
+            Search (Peer ID/Note)
+            <input id="reputation-search" type="text" placeholder="peer-id or note" />
+          </label>
+        </div>
+        <div class="actions-row">
+          <button id="reputation-export-csv" type="button">Export CSV</button>
+          <label class="file-input">
+            Import CSV
+            <input id="reputation-import-file" type="file" accept=".csv,text/csv" />
+          </label>
+          <button id="reputation-import-btn" type="button">Import</button>
+        </div>
+        <table class="table" id="reputation-table">
+          <thead>
+            <tr>
+              <th>Peer ID</th>
+              <th>Score</th>
+              <th>Note</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

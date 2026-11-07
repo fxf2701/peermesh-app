@@ -1,0 +1,87 @@
+BR1 BLE GATT STATE DUMP — SOURCE BASELINE
+
+FINAL VERDICT
+  INCONCLUSIVE
+  Reason: no raw attempt-level real-device logs or database snapshots supplied.
+
+ADDRESS-KEYED STATE
+  addressStateByAddress.connectState
+  addressStateByAddress.writeInFlight
+  clientByDevice
+  connectingClient
+  connecting
+  connectStartedAtMs
+  characteristicByDevice
+  pendingByDevice
+  stagedEnqueueByAddress
+  heldEnqueueByAddress
+  activePendingPacketByAddress
+  activeMeshEnvelopeItemIdByAddress
+  activeDtnControlItemIdByAddress
+  cooldownUntilByAddress
+  pipeline labels / cleanup / retry reasons
+
+STABLE-PEER-KEYED STATE
+  lastSeenAddrByDeviceId
+  lastTargetByDeviceId
+  cooldownUntilByDeviceId
+  deviceIdQuietUntil
+  deviceIdDwellUntil
+  deviceIdRotationCooldownUntil
+  deviceIdRotationRecoverUntil
+  post133RecoveryUntilByDeviceId
+
+CONNECTION OWNER VALIDATION
+  No attempt generation observed.
+  No callback precondition proving:
+    callback.connection == clientByDevice[address]
+    OR callback.connection == connectingClient[address]
+  Cleanup labels carry address/mode/reason, not connection identity.
+
+TIMERS
+  cleanup interval                         5,000 ms
+  connect timeout                        18,000 ms
+  connect attempt cooldown                  800 ms
+  retry base                              2,000 ms
+  retry max                              30,000 ms
+  retry jitter                              500 ms
+  item backoff                            8,000 ms
+  quiet after disconnect                  5,000 ms
+  quiet after status 133                 20,000 ms
+  rotation old-address cooldown          12,000 ms
+  rotation device cooldown                4,000 ms
+  selection old-address cooldown          6,000 ms
+  selection device cooldown               2,000 ms
+  hard reset cooldown                    20,000 ms
+  service transport stall threshold      45,000 ms
+  service transport warmup               45,000 ms
+  service restart confirmation            6,000 ms
+  service recovery cooldown              30,000 ms
+
+HARD RESET CLOSURE SET
+  closeAllGatt closes connections present in:
+    clientByDevice
+    connectingClient
+  It then clears owner maps.
+  Late Android callbacks may still arrive and are processed by address.
+
+QUEUE SAFETY
+  normal cleanup:
+    pending queue preserved
+    staged/held preserved
+    active packet failed/recoverable
+  hard restart:
+    in-memory queues cleared
+    correctness depends on durable dispatcher rehydration
+
+MOST IMPORTANT EVIDENCE GAP
+  For each callback/cleanup, log:
+    stablePeerId
+    address
+    attemptGeneration
+    connectionIdentity
+    currentOwnerIdentity
+    connectState
+    pending/staged/held/active counts
+    cleanup requester generation
+    cleanup target generation

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relay Admin — Banlist</title>
+    <link rel="stylesheet" href="/admin/assets/admin.css" />
+  </head>
+  <body class="admin">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="brand-title">Relay Admin</div>
+          <div class="brand-subtitle">Operator Console</div>
+        </div>
+      </div>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" class="menu">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/peers">Federation</a>
+        <a href="/admin/banlist" class="active">Banlist</a>
+        <a href="/admin/reputation">Reputation</a>
+        <a href="/admin/audit">Audit Trail</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/login" class="auth-guest">Login</a>
+        <button id="logout-btn" class="link-button auth-user">Logout</button>
+      </nav>
+    </header>
+
+    <main class="shell">
+      <div id="ip-allowlist-banner" class="banner hidden"></div>
+      <section
+        class="breadcrumbs"
+        data-breadcrumbs='[{"label":"Back to dashboard","href":"/admin/dashboard"}]'
+      ></section>
+      <section class="hero">
+        <h1>Banlist</h1>
+        <p class="muted">Block abusive peers or CIDR ranges.</p>
+      </section>
+
+      <section class="card">
+        <h2>Add Ban</h2>
+        <form id="banlist-form" class="grid-form">
+          <label>
+            Type
+            <select name="type">
+              <option value="peer_id">Peer ID</option>
+              <option value="cidr">CIDR</option>
+            </select>
+          </label>
+          <label>
+            Value
+            <input type="text" name="value" placeholder="peer-id or 10.0.0.0/8" required />
+          </label>
+          <label>
+            Reason
+            <input type="text" name="reason" placeholder="Optional note" />
+          </label>
+          <button type="submit">Add</button>
+        </form>
+        <div id="banlist-status" class="status"></div>
+      </section>
+
+      <section class="card">
+        <h2>Entries</h2>
+        <div class="filters">
+          <label>
+            Search (IP/Peer ID)
+            <input id="banlist-search" type="text" placeholder="192.168.1.100 or peer-id" />
+          </label>
+          <label>
+            Status
+            <select id="banlist-filter">
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="paused">Paused</option>
+            </select>
+          </label>
+        </div>
+        <div class="actions-row">
+          <button id="banlist-export-csv" type="button">Export CSV</button>
+          <label class="file-input">
+            Import CSV
+            <input id="banlist-import-file" type="file" accept=".csv,text/csv" />
+          </label>
+          <button id="banlist-import-btn" type="button">Import</button>
+        </div>
+        <table class="table" id="banlist-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Value</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Notes</h2>
+        <ul class="list">
+          <li>Use peer IDs or CIDR blocks.</li>
+          <li>Always include a reason for auditability.</li>
+          <li>Disable or remove entries when resolved.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Relay Admin UI · Internal</span>
+      <span id="footer-session" class="muted"></span>
+    </footer>
+
+    <script src="/admin/assets/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+run_id,stable_peer_id,old_address,new_address,attempt_id,advertisement_seen_at,nearby_changed_at,target_selected_at,connect_requested_at,connectGatt_called_at,gatt_connected_at,services_discovered_at,mtu_completed_at,first_write_at,first_receive_at,usable_route_at,disconnect_at,cleanup_at,hard_reset_at,transport_restart_at,evidence_note,result
+source_baseline,unknown,unknown,unknown,advertisement,,,,,,,,,,,,,,,,Discovery may make Nearby positive; raw timestamps absent,inconclusive
+source_baseline,unknown,old_address,new_address,rotation,,,,,,,,,,,,,,,,Old lane may remain alive when active drain path exists,rotated_or_preserved
+source_baseline,unknown,,selected_address,connect_attempt,,,,t0,t0,,,,,,,,t0+18..23s,,,Timeout is 18s sampled by 5s cleanup loop,timed_out_possible
+source_baseline,unknown,,address,status_133,,,,,,,,,,,,,,,,20s quiet + exponential backoff up to 30.5s,status_133_recovery
+source_baseline,unknown,,,service_watchdog,,,,,,,,,,,,,,>=51s,,45s threshold/warmup + 6s confirmation before hard restart,restart_possible
