@@ -1,25 +1,13 @@
-# M3C4 compile-oriented skeleton
+# PeerMesh Android client
 
-This skeleton adds only presentation composition and Android integration points.
+This directory contains the Android implementation of the experimental PeerMesh research project. It is **not** an official binary distribution and is **not** validated for life-critical communication.
 
-Included:
+## Getting started
 
-- a stateless projection bundle over accepted M3C1/M3C2/M3C3 projectors;
-- a lossless adapter from accepted M3A shell content to existing projector input;
-- a pure composition factory with no database, repository, controller or submission dependency;
-- Activity lifecycle fields and reprojection hooks;
-- an explicit TODO renderer for the later Codex implementation.
+- [Build and local verification](../docs/development/BUILD.md) — JDK/SDK prerequisites, `officialDebug` build, APK path, and test commands.
+- [Known research limitations](../docs/research/KNOWN_LIMITATIONS.md) — evidence boundaries and unverified runtime behavior.
+- [Known security limitations](../docs/security/KNOWN_SECURITY_LIMITATIONS.md) — shared authentication material, owner authorization, rekey, and server-side constraints.
 
-Intentionally absent:
+The Android app declares `official` and `emergency` flavors. The historical M3C4 skeleton notes that previously occupied this README are **not** a description of the current Android client. Refer to scoped milestone documents for historical design and implementation decisions; do not infer runtime readiness from their completion labels.
 
-- final Android rendering and strings/layout changes;
-- fresh-confirmation CTA decision/rendering;
-- business logic or semantic changes;
-- new controller/state owner;
-- repository/DAO/persistence/schema changes;
-- submission or timeline-controller changes.
-
-Verification:
-
-- `git diff --check`: PASS.
-- Gradle compile could not run in the artifact environment because Gradle 8.7 was not cached and outbound network access was unavailable.
+Local build/test results must be reported with the exact variant, environment, and test scope. Testing BLE/DTN behavior requires real devices and scenarios beyond unit tests.

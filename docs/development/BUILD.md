@@ -1,215 +1,58 @@
-# Build & Install (Offline-first Mesh Communication App)
+# Build and local verification (research baseline)
 
-> This document explains how to build the mobile clients from source.\
-> The project is client-only and does not require a backend service to run basic functionality.
+PeerMesh is experimental, source-only research software. These steps build the Android client locally; they do **not** establish that the app is secure, production-ready, or suitable for emergency reliance. No official APK is distributed by the project.
 
----
+## Prerequisites
 
-## 0. Requirements
+- JDK 17, Android SDK (compile SDK 35), Android Studio or command-line Android tooling.
+- Android Gradle wrapper in `android/`; the Gradle distribution and dependencies may require network access on a fresh checkout.
+- A physical Android device for meaningful BLE testing. An emulator build is not evidence of mesh transport reliability.
 
-### Android
+## Android: build the `officialDebug` variant
 
-- Android Studio (latest stable)
-- JDK 17 (or the version required by your Gradle setup)
-- Android SDK (installed via Android Studio)
-- A physical Android device for testing (recommended)
+From the **repository root**:
 
-### iOS
-
-- macOS with Xcode (latest stable)
-- Apple Developer account (for device install; simulator supported for limited testing)
-- A physical iOS device for Bluetooth testing (recommended)
-
----
-
-### 1. Repository Structure (example)
-
-Adjust paths to match your repo layout.
-
-```
-/android/            # Android client (Kotlin)
-/ios/                # iOS client (Swift)
-/shared/             # Shared schemas/specs (optional)
-/docs/               # Documentation
-```
-
----
-
-## 2. Android Build (Kotlin)
-
-### 2.1 Open the project
-
-- Launch **Android Studio**
-- Open the folder: `android/`
-
-### 2.2 Configure SDK & Gradle
-
-- Ensure **Android SDK** is installed (Android Studio > SDK Manager)
-- Let Gradle sync complete
-- If prompted, install missing build tools
-
-### 2.3 Build Debug APK
-
-From Android Studio:
-
-- Build → Build Bundle(s) / APK(s) → Build APK(s)
-
-Or from terminal:
-```bash
+```sh
 cd android
-./gradlew assembleDebug
+./gradlew :app:assembleOfficialDebug
 ```
 
-Output:
-```
-android/app/build/outputs/apk/debug/app-debug.apk
-```
+Expected APK location relative to the Android directory:
 
-### 2.4 Build Release APK (Unsigned / Signed)
-
-Unsigned release APK:
-
-```bash
-cd android
-./gradlew assembleRelease
+```text
+app/build/outputs/apk/official/debug/app-official-debug.apk
 ```
 
-Signed release APK (recommended for redistribution):
+To install a locally built APK on an attached test device:
 
-- 1. Create a keystore:
-```bash
-keytool -genkeypair -v -keystore release.keystore -alias app -keyalg RSA -keysize 2048 -validity 10000
-```
-- 2. Configure signing in `android/app/build.gradle` (do not commit secrets)
-- 3. Build:
-```bash
-./gradlew assembleRelease
-```
-> **Important:** Do not commit keystore files or signing passwords.
-
-### 2.5 Install (Sideload) APK
-
-Using ADB:
-```bash
-adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+```sh
+adb install -r app/build/outputs/apk/official/debug/app-official-debug.apk
 ```
 
-## 3. iOS Build (Swift)
+The Android app defines `official` and `emergency` distribution flavors. For the latter, use `:app:assembleEmergencyDebug`; verify its build and runtime behavior independently. Do not assume the two variants have identical behavior or configuration.
 
-### 3.1 Open the project
+## Local unit tests
 
-- Open `ios/App.xcodeproj` or `ios/App.xcworkspace` in Xcode
-
-### 3.2 Select Signing
-
-- Go to Project Settings → Signing & Capabilities
-- Choose your team
-- Ensure a valid Bundle Identifier is set
-
-### 3.3 Build & Run (Device)
-
-- Connect iPhone via USB
-- Select your device in the top toolbar
-- Click **Run**
-
-### 3.4 Build Archive (for distribution)
-
-- Product → Archive
-- Use Organizer to export:
-  - Development build (for internal testing)
-  - Ad Hoc (if you manage device UDIDs)
-  - TestFlight / App Store (if you choose official distribution later)
-> Bluetooth features are best tested on a physical device.
-
----
-
-## 4. Offline / Low-connectivity Build Notes
-
-This project is designed to be built and used without internet access once dependencies are present.
-
-### 4.1 Android: Gradle dependency caching
-
-To build offline after a successful online sync:
-- Run one build online first to populate the Gradle cache
-- Later builds can use:
-```bash
-./gradlew assembleDebug --offline
+```sh
+./gradlew :core:testDebugUnitTest :security:testDebugUnitTest :app:testOfficialDebugUnitTest
 ```
 
-### 4.2 iOS: Swift Package / CocoaPods caching
+**Audit baseline (2026-11-07):** Codex reported a successful `:app:assembleOfficialDebug` build using an existing offline dependency cache; core 83/83 tests passed, security 46/46 passed, and app 622/626 passed. Four app tests failed on source/resource assertions. This is a historical, environment-specific result, **not** a promise that a fresh checkout or the current tree will pass. See [Known limitations](../research/KNOWN_LIMITATIONS.md).
 
-- Ensure dependencies are resolved once online
-- For offline builds, keep:
-  - Xcode DerivedData
-  - SPM caches (or Pods directory if using CocoaPods)
+## Configuration and offline testing
 
----
+The Android Gradle configuration reads optional `PEERMESH_RELAY_BASE_URL` / `RELAY_BASE_URL` and `PEERMESH_REGISTRY_BASE_URL` / `REGISTRY_BASE_URL` from Gradle properties, environment variables, or `local.properties`. Do not use live credentials for research builds. Request-signing secrets configured at build time may be recoverable from APKs and must not be treated as server-wide secrets.
 
-## 5. Configuration
+Basic local/BLE testing should not require a deployed relay. The app may support optional Cloud Sync when configured; its behavior and user controls must be tested separately. A network outage is not the same as a user's explicit choice to disable Cloud Sync. Do not assume every feature works fully offline.
 
-### 5.1 Build-time configuration
+## iOS status
 
-Some settings may be controlled via:
-- `config/` files
-- build flavors
-- environment flags
+`ios/` is currently a **skeleton**, not a buildable Xcode app in this baseline. There is no verified `.xcodeproj` or `.xcworkspace` to open. Do not claim iOS build, install, or BLE support from this repository.
 
-Common examples:
-- Default TTL values
-- Feature flags (e.g., offline communication UI)
-- Logging level
-> Keep any security-sensitive values out of source control.
+## Verification boundaries
 
----
+A successful compilation or unit-test run does not validate BLE interoperability, background behavior, cryptographic owner authorization, key revocation, relay integration, or field reliability. For current security caveats see [Security overview](../SECURITY.md) and [Known security limitations](../security/KNOWN_SECURITY_LIMITATIONS.md).
 
-## 6. Testing Notes (Bluetooth)
+## License
 
-Bluetooth testing recommendations:
-- Prefer physical devices
-- Test in real environments:
-  - open space vs crowded areas
-  - screen on/off
-  - app foreground/background
-
-Platform differences:
-- iOS has stricter background limits
-- Android can run foreground services for more persistent operation
-
----
-
-## 7. Troubleshooting
-
-### Android
-
-- **Gradle sync fails:** check JDK version and Android SDK components
-- **Bluetooth permission issues:** verify runtime permissions (Android 12+ requires explicit BLE permissions)
-- **Install blocked:** enable “Install unknown apps” for your file manager/ADB
-
-### iOS
-
-- **Signing errors:** confirm Team selected and bundle ID unique
-- **Bluetooth not working in simulator:** use a physical device
-- **App won’t run on device:** trust developer certificate in Settings
-
----
-
-## 8. Security Reminder
-
-Building from source does not guarantee safety.
-- Review `../SECURITY.md` for limitations and threat model
-- Do not assume anonymity or protection against powerful adversaries
-- Keep device-level security (passcode, OS updates) enabled
-
----
-
-## 9. License & Redistribution
-
-- Follow the project `LICENSE`
-- If redistributing binaries, include:
-  - `README.md`
-  - `../SECURITY.md`
-  - `../DISCLAIMER.md`
-
----
-
-*This document is intentionally neutral and focuses on software build mechanics only.*
+Consult the root `LICENSE` and check component/third-party notices before redistribution. Building locally does not create an official project release.

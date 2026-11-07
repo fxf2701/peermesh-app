@@ -6,7 +6,9 @@ Use this index to find product information, development guidance, technical spec
 
 - [Project overview](specs/Project_Overview_Technical_Spec.md): scope, architecture, and implementation phases.
 - [Architecture diagram](specs/Architecture_Diagram.md) and [network model](specs/NETWORK_MODEL.md): how local mesh and optional relay services fit together.
-- [Build and install](development/BUILD.md): Android and iOS build instructions.
+- [Build and local verification](development/BUILD.md): verified Android build path and explicit iOS skeleton status.
+- [Known research and verification limitations](research/KNOWN_LIMITATIONS.md): current test evidence, runtime gaps, and research-only use.
+- [Known security limitations](security/KNOWN_SECURITY_LIMITATIONS.md): documented security boundaries and risks.
 - [Engineering principles](development/Engineering_Constitution.md) and [project bootstrap guide](development/project_bootstrap_guide_vi.md): development conventions and workflow.
 - [Security overview](SECURITY.md), [disclaimer](DISCLAIMER.md), and [code of conduct](code_of_conduct.md): shared project guidance.
 
@@ -14,6 +16,8 @@ Use this index to find product information, development guidance, technical spec
 
 | Directory | Contents |
 | --- | --- |
+| [research](research/) | Current research limitations and verification boundaries. |
+| [security](security/) | Implementation-specific security limitations and disclosures. |
 | [specs](specs/) | System architecture, event contracts, feature blueprints, transport requirements, and phase specifications. |
 | [development](development/) | Build instructions, engineering principles, and project setup guidance. |
 | [mobile](mobile/) | Mobile development guides, BLE flows, nearby-room user flow, key storage, and crash logging. |
@@ -44,4 +48,4 @@ Use this index to find product information, development guidance, technical spec
 - Moderation: [product model](moderation/peermesh-play-moderation-model.md) and [Android implementation](moderation/peermesh-android-moderation-implementation-spec.md).
 - UI work: [implementation design reference](design/peermesh-ui-design-spec.md) and [branding guide](assets/peer_mesh_design_system_branding_guide.md).
 
-Phase task lists, historical notes, and proposed designs describe their stated scope and status; check the relevant current specification and implementation when using them.
+**Interpretation:** A design requirement, completed milestone, or historical note is not proof of implemented behavior or a security guarantee. Cross-check the current source and the known-limitations documents. Some `private/` links may not be present in a public source distribution.
