@@ -202,7 +202,7 @@ Contributions focused on:
 
 are welcome.
 
-Please read `CONTRIBUTING.md` before submitting changes.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes. For suspected vulnerabilities, follow the [security reporting policy](SECURITY.md) instead of posting exploit details publicly. The [license and attribution review](docs/legal/LICENSE_AND_ATTRIBUTION_REVIEW.md) tracks outstanding pre-publication checks.
 
 ---
 

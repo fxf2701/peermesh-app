@@ -2,7 +2,7 @@
 
 Use this index to find product information, development guidance, technical specifications, and validation material.
 
-## Start Here
+## Start Here\n\n- [Contribution guide](../CONTRIBUTING.md): issue reports, pull requests, and verification expectations.\n- [Security reporting policy](../SECURITY.md): handling suspected vulnerabilities without public exploit details.\n- [License and attribution review](legal/LICENSE_AND_ATTRIBUTION_REVIEW.md): unresolved metadata and third-party publication checks.
 
 - [Project overview](specs/Project_Overview_Technical_Spec.md): scope, architecture, and implementation phases.
 - [Architecture diagram](specs/Architecture_Diagram.md) and [network model](specs/NETWORK_MODEL.md): how local mesh and optional relay services fit together.
@@ -16,7 +16,7 @@ Use this index to find product information, development guidance, technical spec
 
 | Directory | Contents |
 | --- | --- |
-| [research](research/) | Current research limitations and verification boundaries. |
+| [legal](legal/) | Pre-publication license metadata and attribution review. |\n| [research](research/) | Current research limitations and verification boundaries. |
 | [security](security/) | Implementation-specific security limitations and disclosures. |
 | [specs](specs/) | System architecture, event contracts, feature blueprints, transport requirements, and phase specifications. |
 | [development](development/) | Build instructions, engineering principles, and project setup guidance. |
